@@ -18,8 +18,6 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     username = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     password = sqlalchemy.Column(sqlalchemy.String)
-    created_date = sqlalchemy.Column(sqlalchemy.DateTime,
-                                     default=datetime.datetime.now)
     photo_path = sqlalchemy.Column(sqlalchemy.String, default="")
 
     bookmarks = sqlalchemy.Column(sqlalchemy.String, nullable=True)
