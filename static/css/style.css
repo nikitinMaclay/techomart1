@@ -2657,3 +2657,10 @@ grid-column: 3/4;
     transform: translateX(10px);
   }
 }
+
+
+/* flask_pages */
+
+.registration_title{
+    margin-top: 40px;
+}
