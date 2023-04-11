@@ -59,14 +59,20 @@
         </div>
         <p class="contact-description">г. Санкт-Петербург, ул. Б. Конюшенная, д. 19/8</p>
       </div>
-      <ul class="contact-links-list special-ul">
-        <li class="contact-links-item contact-login-item">
-          <a href="" class="login-link contact-link">Войти</a>
-        </li>
-        <li class="contact-links-item contact-registration-item">
-          <a href="/register" class="registration-link contact-link">Регистрация</a>
-        </li>
-      </ul>
+      {% if not current_user.is_authenticated %}
+        <ul class="contact-links-list special-ul">
+          <li class="contact-links-item contact-login-item">
+            <a href="/login" class="login-link contact-link">Войти</a>
+          </li>
+          <li class="contact-links-item contact-registration-item">
+            <a href="/register" class="registration-link contact-link">Регистрация</a>
+          </li>
+        </ul>
+      {% else %}
+        <div class="login-username">
+          <a href="/logout"><h2>{{ current_user.username }}</h2></a>
+        </div>
+      {% endif %}
     </section>
     <section>
       <h2 class="visually-hidden">Навигация</h2>
