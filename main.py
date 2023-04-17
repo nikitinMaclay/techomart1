@@ -23,6 +23,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/catalog")
+def catalog():
+    return render_template("catalog.html")
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
