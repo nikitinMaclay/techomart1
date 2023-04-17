@@ -15,5 +15,3 @@ class Product(SqlAlchemyBase, UserMixin, SerializerMixin):
     image = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     discount_price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
-    category_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("categories.id"))
-    category = orm.relationship('Category')

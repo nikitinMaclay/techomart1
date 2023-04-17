@@ -69,13 +69,12 @@
           </li>
         </ul>
       {% else %}
-        <div class="login-username">
-          <a href="/logout"><h2>{{ current_user.username }}</h2></a>
-        </div>
-
-        <a href="/user_profile" class="btn btn-primary">
+       <a href="/user_profile" class="btn btn-primary btn-profile">
             Мой профиль
         </a>
+        <div class="login-username">
+          <a href="/logout" class="btn btn-primary btn-exit">Выйти</a>
+        </div>
       {% endif %}
     </section>
     <section>
