@@ -23,6 +23,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/catalog")
+def catalog():
+    return render_template("catalog.html")
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
@@ -76,7 +81,20 @@ def logout():
     logout_user()
     return redirect("/")
 
-
+@app.route('/user_profile', methods=["GET", "POST"])
+@login_required
+def user_profile():
+    form = RegisterForm()
+    if request.method == "GET":
+        form.name.data = current_user.name
+        form.surname.data = current_user.surname
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.password.data = current_user.password
+        print(current_user.password)
+    else:
+            abort(404)
+    return render_template('user_profile.html', title='Мой профиль', form=form)
 def main():
     db_session.global_init("databases/technomart.db")
     app.run()
