@@ -2664,3 +2664,13 @@ grid-column: 3/4;
 .registration_title{
     margin-top: 40px;
 }
+
+.login-username {
+    text-align: center;
+    padding-left: 10px;
+}
+
+.login-username a {
+    color: inherit;
+    text-decoration: inherit;
+}
