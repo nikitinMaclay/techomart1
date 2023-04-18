@@ -6,7 +6,7 @@ from sqlalchemy_serializer import SerializerMixin
 from .db_session import SqlAlchemyBase
 
 
-class Product(SqlAlchemyBase, UserMixin, SerializerMixin):
+class Products(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'products'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

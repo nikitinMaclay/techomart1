@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru" class="page catalog-page">
+{% extends "base_for_catalog.html" %}
 
-<head>
-  <link rel="icon" href="favicon.ico">
-  <link rel="icon" href="./static/img/icons/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="180.png">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link href="./static/css/normalize.css" rel="stylesheet">
-  <link href="./static/css/style.css" rel="stylesheet">
-  <meta charset="utf-8">
-  <title>HTML Academy: Техномарт</title>
-</head>
+{% block content %}
 
 <body class="page-body">
   <header class="main-header catalog-main-header">
@@ -19,7 +9,7 @@
       <h2 class="visually-hidden">Главная</h2>
       <div class="header-special-navigation">
         <a href="" class="main-logo">
-          <img src="./static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="108" height="18"
+          <img src="../static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="108" height="18"
             class="logo-img">
         </a>
         <nav class="customer-navigation">
@@ -64,7 +54,7 @@
       <div class="catalog-contact-container">
         <ul class="catalog-contact-links-list contact-links-list special-ul">
           <li class="contact-user-item">
-            <a href="" class="user-account catalog-contact-link">Равшан Джамшутович</a>
+            <a href="" class="user-account catalog-contact-link">{{current_user.name[:20]}}</a>
           </li>
         </ul>
         <p class="user-wrapper">
@@ -210,154 +200,105 @@
         </form>
       </section>
       <section class="catalog-goods">
-        <h2 class="visually-hidden">список товаров</h2>
-        <article class="catalog-filter catalog-goods-filter">
-          <h2 class="visually-hidden">Сортировка товаров</h2>
-          <div class="sorting-wrapper">
-            <p class="special-zeroing sorting-p">Сортировка:</p>
-          </div>
-          <ul class="catalog-sorting-list special-ul">
-            <li class="catalog-sorting-item catalog-sorting-item-1">
-              <a href="" class="catalog-sorting-link">по цене</a>
+        <div>
+          <h2 class="visually-hidden">список товаров</h2>
+          <article class="catalog-filter catalog-goods-filter">
+            <h2 class="visually-hidden">Сортировка товаров</h2>
+            <div class="sorting-wrapper">
+              <p class="special-zeroing sorting-p">Сортировка:</p>
+            </div>
+            <ul class="catalog-sorting-list special-ul">
+              <li class="catalog-sorting-item catalog-sorting-item-1">
+                <a href="" class="catalog-sorting-link">по цене</a>
+              </li>
+              <li class="catalog-sorting-item catalog-sorting-item-2">
+                <a href="" class="catalog-sorting-link">по типу</a>
+              </li>
+              <li class="catalog-sorting-item catalog-sorting-item-3">
+                <a href="" class="catalog-sorting-link">по функционалу</a>
+              </li>
+              <li class="catalog-sorting-item catalog-sorting-item-4">
+                <a href="" class="catalog-sorting-link" aria-label="показать больше товаров"></a>
+              </li>
+              <li class="catalog-sorting-item catalog-sorting-item-5">
+                <a href="" class="catalog-sorting-link" aria-label="показать меньше товаров"></a>
+              </li>
+            </ul>
+          </article>
+            {% if goods %}
+              <ul class="catalog-goods-list special-ul">
+            {% else %}
+              <ul class="catalog-goods-list special-ul" style="height: 575px">
+            {% endif %}
+            {% for item in goods%}
+              <li class="catalog-goods-item">
+                <div class="catalog-goods-img">
+                  <img src="..{{item.image}}" alt="картинка с {{item.name}}" width="144" height="128">
+                </div>
+                <h3 class='catalog-goods-naming'>{{item.name}}</h3>
+                <a href="" class="catalog-cost-button">{{item.price}} Р.</a>
+                <div class="action-button-wrapper">
+                  <a href="#" class="buying-button">Купить</a>
+                  <a href="#" class="in-bookmarks-button">В закладки</a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul></div>
+          <ul class="catalog-switch-list special-ul">
+            <li class="catalog-switch-item catalog-switch-item-next">
+              {% if current_page != 1 %}
+              <a href="{{current_page - 1}}" class="catalog-switch-button catalog-switch-button-next"
+                aria-label="Предыдущая страница">предыдущая</a>
+              {% else %}
+              <a href="{{current_page - 1}}" class="catalog-switch-button catalog-switch-button-next"
+                aria-label="Предыдущая страница" style="display:none">предыдущая</a>
+              {% endif %}
             </li>
-            <li class="catalog-sorting-item catalog-sorting-item-2">
-              <a href="" class="catalog-sorting-link">по типу</a>
-            </li>
-            <li class="catalog-sorting-item catalog-sorting-item-3">
-              <a href="" class="catalog-sorting-link">по функционалу</a>
-            </li>
-            <li class="catalog-sorting-item catalog-sorting-item-4">
-              <a href="" class="catalog-sorting-link" aria-label="показать больше товаров"></a>
-            </li>
-            <li class="catalog-sorting-item catalog-sorting-item-5">
-              <a href="" class="catalog-sorting-link" aria-label="показать меньше товаров"></a>
+          {% if current_page < 3%}
+              {% for i in range(1, 6) %}
+                {% if i > 0 %}
+                  {% if i == current_page %}
+                    <li class="catalog-switch-item">
+                      <a href="{{i}}" class="catalog-switch-button switch-button-active" aria-label="Страница {{i}}">{{i}}</a>
+                    </li>
+                  {% else %}
+                    <li class="catalog-switch-item">
+                      <a href="{{i}}" class="catalog-switch-button" aria-label="Страница {{i}}">{{i}}</a>
+                    </li>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+          {% elif current_page >= 3 and current_page + 2 <= goods_count %}
+            {% for i in range(current_page - 2, current_page + 3) %}
+                  {% if i == current_page %}
+                    <li class="catalog-switch-item">
+                      <a href="{{i}}" class="catalog-switch-button switch-button-active" aria-label="Страница {{i}}">{{i}}</a>
+                    </li>
+                  {% else %}
+                    <li class="catalog-switch-item">
+                      <a href="{{i}}" class="catalog-switch-button" aria-label="Страница {{i}}">{{i}}</a>
+                    </li>
+                  {% endif %}
+            {% endfor %}
+          {% elif current_page >= 3 and current_page + 2 >= goods_count %}
+            {% for i in range(goods_count - 4, goods_count + 1) %}
+                  {% if i == current_page %}
+                    <li class="catalog-switch-item">
+                      <a href="{{i}}" class="catalog-switch-button switch-button-active" aria-label="Страница {{i}}">{{i}}</a>
+                    </li>
+                  {% else %}
+                    <li class="catalog-switch-item">
+                      <a href="{{i}}" class="catalog-switch-button" aria-label="Страница {{i}}">{{i}}</a>
+                    </li>
+                  {% endif %}
+            {% endfor %}
+          {% endif %}
+            <li class="catalog-switch-item catalog-switch-item-next">
+              <a href="{{current_page + 1}}" class="catalog-switch-button catalog-switch-button-next"
+                aria-label="Следующая страница">следующая</a>
             </li>
           </ul>
-        </article>
-        <ul class="catalog-goods-list special-ul">
-          <li class="catalog-goods-item">
-            <div class="catalog-goods-img">
-              <img src="./static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128">
-            </div>
-            <h3 class='catalog-goods-naming'>Перфоратор BOSCH BFG 6000</h3>
-            <p class="catalog-goods-cost">30500 Р.</p>
-            <a href="" class="catalog-cost-button">25500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-          <li class="catalog-goods-item">
-            <div class="catalog-goods-img">
-              <img src="./static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128">
-            </div>
-            <h3 class='catalog-goods-naming'>Перфоратор BOSCH BFG 6000</h3>
-            <p class="catalog-goods-cost">30500 Р.</p>
-            <a href="" class="catalog-cost-button">25500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-          <li class="catalog-goods-item catalog-goods-item-new">
-            <div class="catalog-goods-img">
-              <img src="./static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128">
-            </div>
-            <h3 class='catalog-goods-naming'>Перфоратор BOSCH BFG 6000</h3>
-            <p class="catalog-goods-cost">30500 Р.</p>
-            <a href="" class="catalog-cost-button">25500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-          <li class="catalog-goods-item catalog-goods-item-new">
-            <div class="catalog-goods-img goods-img-3000">
-              <img src="./static/img/bosch-tools/bosch-3000.jpg" alt="картинка с дрелью 3000-модели" width="127" height="112">
-            </div>
-            <h3 class="catalog-goods-naming catalog-goods-naming-3000">Перфоратор BOSCH BFG 3000</h3>
-            <p class="catalog-goods-cost">22500 Р.</p>
-            <a href="" class="catalog-cost-button cost-button-3000">15500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-          <li class="catalog-goods-item">
-            <div class="catalog-goods-img">
-              <img src="./static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128">
-            </div>
-            <h3 class="catalog-goods-naming">Перфоратор BOSCH BFG 6000</h3>
-            <p class="catalog-goods-cost">30500 Р.</p>
-            <a href="" class="catalog-cost-button">25500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-          <li class="catalog-goods-item catalog-goods-item-new">
-            <div class="catalog-goods-img goods-img-2000">
-              <img src="./static/img/bosch-tools/bosch-2000.jpg" alt="картинка с дрелью 2000-модели" width="127" height="112">
-            </div>
-            <h3 class="catalog-goods-naming catalog-goods-naming-2000">Перфоратор BOSCH BFG 2000</h3>
-            <a href="" class="catalog-cost-button cost-button-2000">12500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-          <li class="catalog-goods-item catalog-goods-item-new">
-            <div class="catalog-goods-img goods-img-3000">
-              <img src="./static/img/bosch-tools/bosch-3000.jpg" alt="картинка с дрелью 3000-модели" width="127" height="112">
-            </div>
-            <h3 class="catalog-goods-naming catalog-goods-naming-3000">Перфоратор BOSCH BFG 3000</h3>
-            <p class="catalog-goods-cost">22500 Р.</p>
-            <a href="" class="catalog-cost-button  cost-button-3000">15500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-          <li class="catalog-goods-item">
-            <div class="catalog-goods-img">
-              <img src="./static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128">
-            </div>
-            <h3 class="catalog-goods-naming">Перфоратор BOSCH BFG 6000</h3>
-            <p class="catalog-goods-cost">30500 Р.</p>
-            <a href="" class="catalog-cost-button">25500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-          <li class="catalog-goods-item catalog-goods-item-new">
-            <div class="catalog-goods-img goods-img-2000">
-              <img src="./static/img/bosch-tools/bosch-2000.jpg" alt="картинка с дрелью 2000-модели" width="127" height="112">
-            </div>
-            <h3 class="catalog-goods-naming catalog-goods-naming-2000">Перфоратор BOSCH BFG 2000</h3>
-            <a href="" class="catalog-cost-button  cost-button-2000">12500 Р.</a>
-            <div class="action-button-wrapper">
-              <a href="#" class="buying-button">Купить</a>
-              <a href="#" class="in-bookmarks-button">В закладки</a>
-            </div>
-          </li>
-        </ul>
-        <ul class="catalog-switch-list special-ul">
-          <li class="catalog-switch-item">
-            <a href="" class="catalog-switch-button switch-button-active" aria-label="Первая страница">1</a>
-          </li>
-          <li class="catalog-switch-item">
-            <a href="" class="catalog-switch-button" aria-label="Вторая страница">2</a>
-          </li>
-          <li class="catalog-switch-item">
-            <a href="" class="catalog-switch-button" aria-label="Третья страница">3</a>
-          </li>
-          <li class="catalog-switch-item catalog-switch-item-next">
-            <a href="" class="catalog-switch-button catalog-switch-button-next"
-              aria-label="Следующая страница">следующая</a>
-          </li>
-        </ul>
-      </section>
+        </section>
     </section>
     <div class="catalog-about-perforators-wrapper">
       <section class="catalog-about-perforators">
@@ -370,7 +311,7 @@
           Существуют электромеханические и пневматические перфораторы. Современные модели могут выполнять функции дрели,
           шуруповерта и отбойного молотка<br>
           В ассортиментном ряду есть выбор «трехрежимников»: в одном устройстве будут совмещены отбойный молоток и
-          ударная180deg
+          ударная
           дрель.</p>
       </section>
     </div>
@@ -381,7 +322,7 @@
       <div class="main-footer-address">
         <div class="footer-logo">
           <a href="">
-            <img src="./static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="138" height="23"
+            <img src="../static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="138" height="23"
               class="logo-img footer-logo-img">
           </a>
         </div>
@@ -489,7 +430,8 @@
     </form>
     <button type="button" class="modal-closing-button catalog-modal-closing-button" aria-label="Закрыть"></button>
   </section>
-  <script src="./static/js/catalog-format.js"></script>
+  <script src="../static/js/catalog-format.js"></script>
 </body>
 
 </html>
+{% endblock %}
