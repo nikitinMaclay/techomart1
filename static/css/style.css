@@ -205,6 +205,7 @@
   width: 940px;
   margin: 0 auto;
   margin-bottom: 40px;
+  justify-content: space-between;
 }
 
 .text-field{
@@ -415,7 +416,6 @@
 }
 
 .contact-inf {
-  margin-right: 111px;
   text-align: center;
 }
 
@@ -1781,7 +1781,7 @@ grid-column: 3/4;
   text-align: center;
   padding: 12px 57px 12px 53px;
   margin-bottom: 7px;
-  width: 296px;
+
 }
 
 .contact-user-item::after{
@@ -2655,6 +2655,7 @@ grid-column: 3/4;
 .login-username {
     text-align: center;
     padding-left: 10px;
+    display: flex;
 }
 
 .login-username a {
