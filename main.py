@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, make_response, abor
 
 from data import db_session
 from data.users import User
-
+from data.products import Product
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from forms.user import RegisterForm, LoginForm
@@ -95,6 +95,16 @@ def user_profile():
     else:
             abort(404)
     return render_template('user_profile.html', title='Мой профиль', form=form)
+
+
+@app.route("/bookmark")
+def bookmark():
+    db_sess = db_session.create_session()
+    goods = db_sess.query(Product).all()
+
+    return render_template("bookmark.html", goods=goods)
+
+
 def main():
     db_session.global_init("databases/technomart.db")
     app.run()
