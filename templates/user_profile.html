@@ -2,6 +2,10 @@
 
 {% block content %}
 <h1 class="registration_title" style="text-align: center">Мой профиль</h1>
+<a href="/edit_profile" class="btn btn-secondary">
+            Изменить профиль
+        </a>
+<br>
 <img src='{{current_user.photo_path}}' alt="Ne rabotaet">
 <form action="" method="post">
     {{ form.hidden_tag() }}
