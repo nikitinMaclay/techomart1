@@ -2,11 +2,13 @@ import datetime
 
 from flask import Flask, render_template, redirect, request, make_response, abort, jsonify
 
-from data import db_session
+from data import db_session, products_resources
 from data.users import User
 from data.products import Products
 
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+
+from flask_restful import reqparse, Api, Resource
 
 from forms.user import RegisterForm, LoginForm
 
@@ -17,6 +19,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(
 )
 login_manager = LoginManager()
 login_manager.init_app(app)
+api = Api(app)
 
 
 @app.route("/")
@@ -25,7 +28,7 @@ def index():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def reqister():
+def register():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -162,6 +165,8 @@ def bookmark():
 
 def main():
     db_session.global_init("databases/technomart.db")
+    api.add_resource(products_resources.ProductsResource, '/api/products/<int:products_id>')
+    api.add_resource(products_resources.ProductsListResource, '/api/products')
     app.run()
 
 
