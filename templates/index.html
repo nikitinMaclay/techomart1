@@ -3,11 +3,11 @@
 
 <head>
   <link rel="icon" href="favicon.ico">
-  <link rel="icon" href="./static/img/icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="../static/img/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="180.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link href="./static/css/normalize.css" rel="stylesheet">
-  <link href="./static/css/style.css" rel="stylesheet">
+  <link href="../static/css/normalize.css" rel="stylesheet">
+  <link href="../static/css/style.css" rel="stylesheet">
   <meta charset="utf-8">
   <title>HTML Academy: Техномарт</title>
 </head>
@@ -19,7 +19,7 @@
       <h2 class="visually-hidden">Главная</h2>
       <div class="header-special-navigation">
         <a href="" class="main-logo">
-          <img src="./static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="108" height="18"
+          <img src="../static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="108" height="18"
             class="logo-img">
         </a>
         <nav class="customer-navigation">
@@ -69,10 +69,10 @@
           </li>
         </ul>
       {% else %}
-       <a href="/user_profile" class="btn btn-primary btn-profile">
-            Мой профиль
-        </a>
         <div class="login-username">
+          <a href="/user_profile" class="btn btn-primary btn-profile">
+            Мой профиль
+          </a>
           <a href="/logout" class="btn btn-primary btn-exit">Выйти</a>
         </div>
       {% endif %}
@@ -88,7 +88,7 @@
             <a href="" class="content-link header-nav-link">Компания</a>
           </li>
           <li class="site-navigation-item special-content-item">
-            <a href="catalog" class="content-link header-nav-link">Каталог</a>
+            <a href="catalog/1" class="content-link header-nav-link">Каталог</a>
           </li>
           <li class="site-navigation-item special-content-item">
             <a href="" class="content-link header-nav-link">Новости</a>
@@ -135,9 +135,9 @@
               <p class="good-title-add">Настоящие мужские игрушки</p>
             </div>
             <a href="catalog.html" class="button goods-cards-button">Открыть каталог</a>
-            <button type="button" class="slider-back"><img src="./static/img/icons/icon-left.svg" alt="пролистнуть слайдер назад"
+            <button type="button" class="slider-back"><img src="../static/img/icons/icon-left.svg" alt="пролистнуть слайдер назад"
                 width="22" height="40"></button>
-            <button type="button" class="slider-next"><img src="./static/img/icons/icon-right.svg"
+            <button type="button" class="slider-next"><img src="../static/img/icons/icon-right.svg"
                 alt="пролистнуть слайдер вперед" width="22" height="40"></button>
             <button type="button" class="slide-1" aria-label="первый слайд неактивен">
               <span class="slide"></span>
@@ -153,10 +153,10 @@
             </div>
             <a href="catalog.html" class="button goods-cards-button">Открыть каталог</a>
             <button type="button" class="slider-back">
-              <img src="./static/img/icons/icon-left.svg" alt="пролистнуть слайдер назад" width="22" height="40">
+              <img src="../static/img/icons/icon-left.svg" alt="пролистнуть слайдер назад" width="22" height="40">
             </button>
             <button type="button" class="slider-next">
-              <img src="./static/img/icons/icon-right.svg" alt="пролистнуть слайдер вперед" width="22" height="40">
+              <img src="../static/img/icons/icon-right.svg" alt="пролистнуть слайдер вперед" width="22" height="40">
             </button>
             <button type="button" class="slide-1" aria-label="первый слайд активен">
               <span class="slide slide-active"></span>
@@ -190,7 +190,7 @@
       </article>
       <ul class="popular-goods-list special-ul">
         <li class="popular-goods-item popular-goods-item-1">
-          <img src="./static/img/bosch-tools/bosch-9000.jpg" alt="картинка с дрелью 9000-модели" width="184" height="164"
+          <img src="../static/img/bosch-tools/bosch-9000.jpg" alt="картинка с дрелью 9000-модели" width="184" height="164"
             class="bosch-item-img bosch-item-1">
           <h3 class='goods-naming'>Перфоратор BOSCH BFG 9000</h3>
           <p class="goods-cost">32500 Р.</p>
@@ -201,7 +201,7 @@
           </div>
         </li>
         <li class="popular-goods-item popular-goods-item-2">
-          <img src="./static/img/bosch-tools/bosch-3000.jpg" alt="картинка с дрелью 3000-модели" width="127" height="112"
+          <img src="../static/img/bosch-tools/bosch-3000.jpg" alt="картинка с дрелью 3000-модели" width="127" height="112"
             class="bosch-item-img bosch-item-2">
           <h3 class='goods-naming goods-naming-special'>Перфоратор BOSCH BFG 3000</h3>
           <p class="goods-cost">22500 Р.</p>
@@ -212,7 +212,7 @@
           </div>
         </li>
         <li class="popular-goods-item popular-goods-item-3">
-          <img src="./static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128"
+          <img src="../static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128"
             class="bosch-item-img bosch-item-3">
           <h3 class='goods-naming'>Перфоратор BOSCH BFG 6000</h3>
           <p class="goods-cost">30500 Р.</p>
@@ -223,7 +223,7 @@
           </div>
         </li>
         <li class="popular-goods-item popular-goods-item-4">
-          <img src="./static/img/bosch-tools/bosch-2000.jpg" alt="картинка с дрелью 2000-модели" width="127" height="112"
+          <img src="../static/img/bosch-tools/bosch-2000.jpg" alt="картинка с дрелью 2000-модели" width="127" height="112"
             class="bosch-item-img bosch-item-4">
           <h3 class='goods-naming goods-naming-special'>Перфоратор BOSCH BFG 2000</h3>
           <p class="goods-cost">22500 Р.</p>
@@ -244,49 +244,49 @@
       <ul class="manufacturers-list special-ul">
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/bosch-company.png" alt="Компания bosch" width="126" height="37"
+            <img src="../static/img/companies/bosch-company.png" alt="Компания bosch" width="126" height="37"
               class="manufacturer-img-1">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/makita.png" alt="Компания Makita" width="123" height="40"
+            <img src="../static/img/companies/makita.png" alt="Компания Makita" width="123" height="40"
               class="manufacturer-img-2">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/dewalt.png" alt="Компания DeWALT" width="146" height="44"
+            <img src="../static/img/companies/dewalt.png" alt="Компания DeWALT" width="146" height="44"
               class="manufacturer-img-3">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/interschol.png" alt="Компания Интерскол" width="200" height="76"
+            <img src="../static/img/companies/interschol.png" alt="Компания Интерскол" width="200" height="76"
               class="manufacturer-img-4">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/hitachi.png" alt="Компания Hitachi" width="169" height="31"
+            <img src="../static/img/companies/hitachi.png" alt="Компания Hitachi" width="169" height="31"
               class="manufacturer-img-5">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/lg.png" alt="Компания LG" width="121" height="73"
+            <img src="../static/img/companies/lg.png" alt="Компания LG" width="121" height="73"
               class="manufacturer-img-6">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/aeg.png" alt="Компания AEG" width="151" height="96"
+            <img src="../static/img/companies/aeg.png" alt="Компания AEG" width="151" height="96"
               class="manufacturer-img-7">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/metabo.png" alt="Компания Metabo" width="204" height="69"
+            <img src="../static/img/companies/metabo.png" alt="Компания Metabo" width="204" height="69"
               class="manufacturer-img-8">
           </a>
         </li>
@@ -357,7 +357,7 @@
         </p>
         <figure class="map-wrapper">
           <a href="#">
-            <img src="./static/img/other-img/index-map.png" alt="Карта с адресом: 'Большая Конюшенная улицa, 19'" width="300"
+            <img src="../static/img/other-img/index-map.png" alt="Карта с адресом: 'Большая Конюшенная улицa, 19'" width="300"
               height="158" class="contacts-img">
           </a>
         </figure>
@@ -371,7 +371,7 @@
       <div class="main-footer-address">
         <div class="footer-logo">
           <a href="">
-            <img src="./static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="138" height="23"
+            <img src="../static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="138" height="23"
               class="logo-img footer-logo-img">
           </a>
         </div>

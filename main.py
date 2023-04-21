@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, request, make_response, abor
 
 from data import db_session
 from data.users import User
+from data.products import Products
 
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
@@ -21,11 +22,6 @@ login_manager.init_app(app)
 @app.route("/")
 def index():
     return render_template("index.html")
-
-
-@app.route("/catalog")
-def catalog():
-    return render_template("catalog.html")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -69,18 +65,6 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    db_sess = db_session.create_session()
-    return db_sess.query(User).get(user_id)
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
-
 @app.route('/user_profile', methods=["GET", "POST"])
 @login_required
 def user_profile():
@@ -95,6 +79,39 @@ def user_profile():
     else:
             abort(404)
     return render_template('user_profile.html', title='Мой профиль', form=form)
+
+
+@app.route('/catalog/<int:page_idx>', methods=["GET", "POST"])
+def catalog(page_idx=1):
+    db_sess = db_session.create_session()
+    goods = db_sess.query(Products).filter(Products.id > 9 * (page_idx - 1), Products.id <= 9 * page_idx).all()
+    goods_count = db_sess.query(Products).count()
+    if float(goods_count // 9) == goods_count / 9:
+        goods_count = goods_count // 9
+    else:
+        goods_count = goods_count // 9 + 1
+    print(goods_count)
+    return render_template("catalog.html", goods=goods, current_page=page_idx, goods_count=goods_count)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    db_sess = db_session.create_session()
+    return db_sess.query(User).get(user_id)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
+@app.errorhandler(400)
+def bad_request(_):
+    return make_response(jsonify({'error': 'Bad Request'}), 400)
+
+
 def main():
     db_session.global_init("databases/technomart.db")
     app.run()

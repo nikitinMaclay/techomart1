@@ -205,6 +205,7 @@
   width: 940px;
   margin: 0 auto;
   margin-bottom: 40px;
+  justify-content: space-between;
 }
 
 .text-field{
@@ -415,7 +416,6 @@
 }
 
 .contact-inf {
-  margin-right: 111px;
   text-align: center;
 }
 
@@ -1703,6 +1703,7 @@ grid-column: 3/4;
   border: 1px solid var(--basic-border-color);
   box-sizing: border-box;
   margin-top: -11px;
+  margin-bottom: 30px;
 }
 
 .catalog-sorting-link{
@@ -1780,16 +1781,7 @@ grid-column: 3/4;
   text-align: center;
   padding: 12px 57px 12px 53px;
   margin-bottom: 7px;
-}
 
-.contact-user-item::before{
-  content: "";
-  position: absolute;
-  background: url(../img/icons/icon-user.svg);
-  width: 20px;
-  height: 18px;
-  bottom: 15px;
-  left: 11px;
 }
 
 .contact-user-item::after{
@@ -1806,16 +1798,8 @@ grid-column: 3/4;
   background: url(../img/icons/catalog-icon-login-blue.svg);
 }
 
-.contact-user-item:hover::before{
-  background: url(../img/icons/icon-user-blue.svg);
-}
-
 .contact-user-item:active::after{
   background: url(../img/icons/grey-icon-login.svg);
-}
-
-.contact-user-item:active::before{
-  background: url(../img/icons/grey-icon-user.svg);
 }
 
 .catalog-contact-container{
@@ -1936,7 +1920,10 @@ grid-column: 3/4;
   }
 
 .catalog-goods{
-    margin-bottom: 58px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
 .catalog-goods-list{
@@ -2668,6 +2655,7 @@ grid-column: 3/4;
 .login-username {
     text-align: center;
     padding-left: 10px;
+    display: flex;
 }
 
 .login-username a {
