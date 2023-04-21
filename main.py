@@ -171,6 +171,14 @@ def bad_request(_):
     return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 
+@app.route("/bookmark")
+def bookmark():
+    db_sess = db_session.create_session()
+    goods = db_sess.query(Product).all()
+
+    return render_template("bookmark.html", goods=goods)
+
+
 def main():
     db_session.global_init("databases/technomart.db")
     app.run()
