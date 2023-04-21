@@ -24,11 +24,6 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/catalog")
-def catalog():
-    return render_template("catalog.html")
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
@@ -69,18 +64,6 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
-
-@login_manager.user_loader
-def load_user(user_id):
-    db_sess = db_session.create_session()
-    return db_sess.query(User).get(user_id)
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
 
 @app.route('/user_profile', methods=["GET", "POST"])
 @login_required
@@ -138,8 +121,6 @@ def edit_user():
                            )
 
 
-
-
 @app.route('/catalog/<int:page_idx>', methods=["GET", "POST"])
 def catalog(page_idx=1):
     db_sess = db_session.create_session()
@@ -174,7 +155,7 @@ def bad_request(_):
 @app.route("/bookmark")
 def bookmark():
     db_sess = db_session.create_session()
-    goods = db_sess.query(Product).all()
+    goods = db_sess.query(Products).all()
 
     return render_template("bookmark.html", goods=goods)
 
