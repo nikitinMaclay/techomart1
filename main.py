@@ -8,7 +8,7 @@ from data.products import Products
 
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
-from flask_restful import reqparse, Api, Resource
+from flask_restful import Api
 
 from forms.user import RegisterForm, LoginForm
 
