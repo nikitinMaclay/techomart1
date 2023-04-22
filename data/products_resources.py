@@ -7,9 +7,11 @@ from .products import Products
 
 parser = reqparse.RequestParser()
 parser.add_argument('name', required=True)
+parser.add_argument('producer_id', required=True, type=int)
 parser.add_argument('image', required=True)
 parser.add_argument('price', required=True, type=int)
 parser.add_argument('discount_price', required=True, type=int)
+
 
 def abort_if_products_not_found(products_id):
     session = db_session.create_session()
@@ -26,7 +28,7 @@ class ProductsResource(Resource):
         return jsonify(
             {
                 'products': news.to_dict(
-                    only=('name', 'image', 'price', 'discount_price')
+                    only=('name', 'producer', 'image', 'price', 'discount_price')
                 )
             }
         )
@@ -47,7 +49,9 @@ class ProductsListResource(Resource):
         return jsonify(
             {
                 'products': [
-                    item.to_dict(only=('name', 'image', 'price', 'discount_price')) for item in news
+                    item.to_dict(
+                        only=('name', 'producer', 'image', 'price', 'discount_price')
+                    ) for item in news
                 ]
             }
         )
@@ -57,6 +61,7 @@ class ProductsListResource(Resource):
         session = db_session.create_session()
         products = Products(
             name=args['name'],
+            producer_id=args['producer_id'],
             image=args['image'],
             price=args['price'],
             discount_price=args['discount_price']

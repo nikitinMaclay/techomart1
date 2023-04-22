@@ -221,7 +221,7 @@
             {% for item in goods%}
               <li class="catalog-goods-item">
                 <div class="catalog-goods-img">
-                  <img src="..{{item.image}}" alt="картинка с {{item.name}}" width="144" height="128">
+                  <img src="{{item.image}}" alt="картинка с {{item.name}}" width="144" height="128">
                 </div>
                 <h3 class='catalog-goods-naming'>{{item.name}}</h3>
                 <a href="" class="catalog-cost-button">{{item.price}} Р.</a>
