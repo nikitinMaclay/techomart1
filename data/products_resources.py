@@ -24,11 +24,11 @@ class ProductsResource(Resource):
     def get(self, products_id):
         abort_if_products_not_found(products_id)
         session = db_session.create_session()
-        news = session.query(Products).get(products_id)
+        products = session.query(Products).get(products_id)
         return jsonify(
             {
-                'products': news.to_dict(
-                    only=('name', 'producer', 'image', 'price', 'discount_price')
+                'products': products.to_dict(
+                    only=('name', 'producer.id', 'producer.name', 'image', 'price', 'discount_price')
                 )
             }
         )
@@ -45,13 +45,17 @@ class ProductsResource(Resource):
 class ProductsListResource(Resource):
     def get(self):
         session = db_session.create_session()
-        news = session.query(Products).all()
+        products = session.query(Products).all()
         return jsonify(
             {
                 'products': [
-                    item.to_dict(
-                        only=('name', 'producer', 'image', 'price', 'discount_price')
-                    ) for item in news
+                    item.to_dict(only=(
+                        'name',
+                        'producer.id',
+                        'producer.name',
+                        'image', 'price',
+                        'discount_price'
+                    )) for item in products
                 ]
             }
         )

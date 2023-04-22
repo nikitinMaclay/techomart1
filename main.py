@@ -2,7 +2,7 @@ import datetime
 
 from flask import Flask, render_template, redirect, request, make_response, abort, jsonify
 
-from data import db_session, products_resources
+from data import db_session, products_resources, producers_recources
 from data.users import User
 from data.products import Products
 
@@ -165,8 +165,13 @@ def bookmark():
 
 def main():
     db_session.global_init("databases/technomart.db")
+
     api.add_resource(products_resources.ProductsResource, '/api/products/<int:products_id>')
     api.add_resource(products_resources.ProductsListResource, '/api/products')
+
+    api.add_resource(producers_recources.ProducersResource, '/api/producers/<int:producers_id>')
+    api.add_resource(producers_recources.ProducersListResource, '/api/producers')
+
     app.run()
 
 
