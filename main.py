@@ -9,6 +9,8 @@ from data.products import Products
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from forms.user import RegisterForm, LoginForm
+from forms.product import ProductForm
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -19,9 +21,13 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    form = ProductForm()
+    if form.validate_on_submit():
+        print('hello')
+        return "оууу дяяя"
+    return render_template("index.html", form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
