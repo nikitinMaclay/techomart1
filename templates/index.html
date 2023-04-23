@@ -25,7 +25,8 @@
         <nav class="customer-navigation">
           <ul class="customer-navigation-list special-ul">
             <li class="customer-list-item">
-              <form class="main-form" method="get" action="" novalidate>
+              <form class="main-form" method="post" action="">
+                {{ form.csrf_token }}
                 <label class="visually-hidden">Поиск:</label>
                 {{ form.product(class="form-control", id='searching-field', class="text-field special-text-field",
                   placeholder="Поиск:") }}
