@@ -5,12 +5,14 @@ from flask import Flask, render_template, redirect, request, make_response, abor
 from data import db_session
 from data.users import User
 from data.products import Products
+from data.functions import word_separation
 
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from forms.user import RegisterForm, LoginForm
 from forms.product import ProductForm
 
+import pymorphy2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -25,8 +27,25 @@ login_manager.init_app(app)
 def index():
     form = ProductForm()
     if form.validate_on_submit():
-        print('hello')
-        return "оууу дяяя"
+        page_idx = 1
+        db_sess = db_session.create_session()
+        product = form.product.data
+        product = word_separation(product)
+        goods = db_sess.query(Products).filter(
+            Products.name.like(f'%{product}%')).filter(
+            Products.id > 9 * (page_idx - 1), Products.id <= 9 * page_idx).all(
+        )
+        for el in goods:
+            print(el)
+        goods_count = db_sess.query(Products).filter(
+            Products.name.like(f'%{product}%')).count()
+        if float(goods_count // 9) == goods_count / 9:
+            goods_count = goods_count // 9
+        else:
+            goods_count = goods_count // 9 + 1
+        print(goods_count)
+        return render_template("catalog.html", goods=goods,
+                               current_page=page_idx, goods_count=goods_count)
     return render_template("index.html", form=form)
 
 
