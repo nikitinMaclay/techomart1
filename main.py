@@ -130,7 +130,6 @@ def catalog(page_idx=1):
         goods_count = goods_count // 9
     else:
         goods_count = goods_count // 9 + 1
-    print(goods_count)
     return render_template("catalog.html", goods=goods, current_page=page_idx, goods_count=goods_count)
 
 
