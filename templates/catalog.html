@@ -124,20 +124,6 @@
             <fieldset class="filter-item">
               <legend>Цена:</legend>
               <div class="range-filter">
-                <div class="range-controls">
-                  <div class="scale">
-                    <div class="bar" style="
-                        width: 80%;
-                        margin-left: 0%
-                      "></div>
-                  </div>
-                  <div class="toggle toggle-min" tabindex="0" style="
-                      left: 9%
-                    " aria-label="назначить минимальную цену"></div>
-                  <div class="toggle toggle-max" tabindex="0" style="
-                      left: 73%
-                    " aria-label="назначить максимальную цену"></div>
-                </div>
                 <div class="price-controls">
                   <label class="min-price">
                     {{ form.price_from(min="0", max=max_value, value=min_price) }}
@@ -391,8 +377,8 @@
     </form>
     <button type="button" class="modal-closing-button catalog-modal-closing-button" aria-label="Закрыть"></button>
   </section>
+
   <script src="../static/js/catalog-format.js"></script>
 </body>
-
 </html>
 {% endblock %}
