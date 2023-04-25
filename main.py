@@ -1,6 +1,8 @@
 import datetime
 
 from flask import Flask, render_template, redirect, request, make_response, abort, jsonify
+from sqlalchemy import collate, func
+from sqlalchemy.sql import text
 
 from data import db_session
 from data.users import User
@@ -31,10 +33,11 @@ def index():
         db_sess = db_session.create_session()
         product = form.product.data
         product = word_separation(product)
+        print(product)
         goods = db_sess.query(Products).filter(
-            Products.name.like(f'%{product}%')).filter(
-            Products.id > 9 * (page_idx - 1), Products.id <= 9 * page_idx).all(
-        )
+            Products.id > 9 * (page_idx - 1), Products.id <= 9 * page_idx,
+            func.lower(Products.name).like(func.lower(f"%{product}%"))).all()
+        print(goods)
         for el in goods:
             print(el)
         goods_count = db_sess.query(Products).filter(
