@@ -480,6 +480,8 @@
 
 .catalog-contact-links-list{
   width: 296px;
+  display: flex;
+  justify-content: center;
 }
 
 .contact-links-item{
@@ -1926,7 +1928,7 @@ grid-column: 3/4;
     justify-content: space-between;
   }
 
-.catalog-goods-list{
+.catalog_goods_ls{
     display: grid;
     grid-template-columns: repeat(3, 220px);
     gap: 20px;
@@ -1968,10 +1970,11 @@ grid-column: 3/4;
   display: flex;
   flex-wrap: wrap;
   top: 36px;
-  left: 38px;
+  left: 42px;
 }
 
 .buying-button{
+  border: none;
   position: relative;
   font-family: "Cuprum", Arial, sans-serif;;
   font-style: normal;
@@ -2018,6 +2021,10 @@ grid-column: 3/4;
   padding: 8px 33px 6px 30px;
   border: 3px solid var(--basic-dark-green);
   border-radius: 2px;
+}
+
+.from_bookmarks_btn{
+    width: 135px;
 }
 
 .in-bookmarks-button:hover{
