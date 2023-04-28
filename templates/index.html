@@ -25,12 +25,13 @@
         <nav class="customer-navigation">
           <ul class="customer-navigation-list special-ul">
             <li class="customer-list-item">
-              <form class="main-form">
-                <label for="searching-field" class="visually-hidden">Поиск:</label>
-                <input type='text' name='searching' id='searching-field' class="text-field special-text-field"
-                  placeholder="Поиск:">
+              <form class="main-form" method="post" action="">
+                {{ form.csrf_token }}
+                <label class="visually-hidden">Поиск:</label>
+                {{ form.product(class="form-control", id='searching-field', class="text-field special-text-field",
+                  placeholder="Поиск:") }}
                 <div class="for-icon"></div>
-                <button type="submit" class="visually-hidden"></button>
+                {{ form.submit(type="submit", class="visually-hidden") }}
               </form>
             </li>
             <li class="customer-list-item customer-list-item-active bookmark">
