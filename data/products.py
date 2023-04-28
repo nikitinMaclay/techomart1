@@ -14,9 +14,13 @@ class Products(SqlAlchemyBase, UserMixin, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    producer_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                sqlalchemy.ForeignKey("producers.id"))
     image = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     discount_price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+
+    producer = orm.relationship('Producers')
 
     users = relationship("User", secondary="users_products")
     cart_users = relationship("User", secondary="users_cart_products")
