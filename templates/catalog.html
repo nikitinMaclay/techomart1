@@ -88,7 +88,7 @@
             <a href="" class="content-link header-nav-link">Компания</a>
           </li>
           <li class="site-navigation-item special-content-item">
-            <a href="" class="content-link header-nav-link">Каталог</a>
+            <a href="/catalog/1" class="content-link header-nav-link">Каталог</a>
           </li>
           <li class="site-navigation-item special-content-item">
             <a href="" class="content-link header-nav-link">Новости</a>
@@ -180,19 +180,6 @@
           </section>
           <section>
             {{ form.submit(class="catalog-choice-button", tabindex="0") }}
-            <h2 class="filter-title filter-title-charge">Питание:</h2>
-            <ul class="catalog-choice-list radio-choice-list special-ul">
-              <li class="catalog-choice-item catalog-radio-item">
-                <input type="radio" name="radio-1" id="choice-of-accum" class="catalog-choice-radio visually-hidden"
-                  disabled>
-                <label for="choice-of-accum" class="label-radio" tabindex="0">Аккумуляторные</label>
-              </li>
-              <li class="catalog-choice-item catalog-radio-item">
-                <input type="radio" name="radio-1" id="choice-of-amperage" class="catalog-choice-radio visually-hidden">
-                <label for="choice-of-amperage" class="label-radio" tabindex="0">Сетевые</label>
-              </li>
-            </ul>
-            <button class="catalog-choice-button" tabindex="0">Показать</button>
           </section>
         </form>
       </section>
@@ -288,7 +275,7 @@
             {% endfor %}
           {% endif %}
             <li class="catalog-switch-item catalog-switch-item-next">
-              <a href="{{current_page + 1}}" class="catalog-switch-button catalog-switch-button-next"
+              <a href="{{current_page + 1}}?{{ params }}" class="catalog-switch-button catalog-switch-button-next"
                 aria-label="Следующая страница">следующая</a>
             </li>
           </ul>
