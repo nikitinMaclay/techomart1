@@ -31,17 +31,14 @@ api = Api(app)
 
 
 @app.route("/", methods=["GET", "POST"])
-@app.route("/")
-@app.route("/index")
+@app.route("/index", methods=["GET", "POST"])
 def index():
     form = ProductForm()
     if form.validate_on_submit():
         product = form.product.data
         product = word_separation(product)
         return redirect(f"/catalog/1?search={product}")
-        # return render_template("catalog.html", goods=goods,
-        #                        current_page=page_idx, goods_count=goods_count, form=FilteringForm())
-    return render_template("index.html", form=form)
+
     db_sess = db_session.create_session()
     goods = db_sess.query(Products).filter(Products.id >= 1, Products.id <= 4).all()
     if current_user.is_authenticated:
@@ -53,7 +50,7 @@ def index():
     else:
         bookmarks_count = 0
         cart_count = 0
-    return render_template("index.html", goods=goods, bookmarks_count=bookmarks_count, cart_count=cart_count)
+    return render_template("index.html", goods=goods, bookmarks_count=bookmarks_count, cart_count=cart_count, form=form)
 
 
 @app.route("/add_to_bookmarks", methods=['post'])
@@ -197,6 +194,12 @@ def edit_user():
 
 @app.route('/catalog/<int:page_idx>', methods=["GET", "POST"])
 def catalog(page_idx=1):
+    form = ProductForm()
+    if form.validate_on_submit():
+        product = form.product.data
+        product = word_separation(product)
+        return redirect(f"/catalog/1?search={product}")
+
     filtering_form = FilteringForm()
     if filtering_form.validate_on_submit():
         parsed_url = urlparse(request.url)
@@ -260,6 +263,7 @@ def catalog(page_idx=1):
         goods=goods,
         current_page=page_idx,
         goods_count=goods_count,
+        search_form=form,
         form=filtering_form,
         min_price=price_from,
         max_price=price_to,
