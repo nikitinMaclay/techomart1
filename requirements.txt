@@ -1,0 +1,5 @@
+SQLAlchemy==2.0.4
+Werkzeug==2.2.2
+pymorphy2==0.9.1
+Flask==2.2.2
+WTForms==3.0.1
