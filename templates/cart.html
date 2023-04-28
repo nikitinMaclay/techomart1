@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru" class="page">
+
+<head>
+  <link rel="icon" href="favicon.ico">
+  <link rel="icon" href="../static/img/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link href="../static/css/normalize.css" rel="stylesheet">
+  <link href="../static/css/style.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <title>HTML Academy: Техномарт</title>
+</head>
+
+<body class="page-body">
+  <header class="main-header">
+    <h1 class="visually-hidden">Техномарт</h1>
+    <section class="main-section-customer">
+      <h2 class="visually-hidden">Главная</h2>
+      <div class="header-special-navigation">
+        <a href="" class="main-logo">
+          <img src="../static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="108" height="18"
+            class="logo-img">
+        </a>
+        <nav class="customer-navigation">
+          <ul class="customer-navigation-list special-ul">
+            <li class="customer-list-item">
+              <form class="main-form">
+                <label for="searching-field" class="visually-hidden">Поиск:</label>
+                <input type='text' name='searching' id='searching-field' class="text-field special-text-field"
+                  placeholder="Поиск:">
+                <div class="for-icon"></div>
+                <button type="submit" class="visually-hidden"></button>
+              </form>
+            </li>
+            <li class="customer-list-item customer-list-item-active bookmark">
+              <a href="/bookmark" class="content-link customer-content-link">Закладки: {{goods_count}}</a>
+            </li>
+            <li class="customer-list-item customer-list-item-active cart">
+              <a href="/cart" class="content-link customer-content-link">Корзина: {{cart_goods_count}}</a>
+            </li>
+            <li class="customer-list-item">
+              <a href="" class="section-customer-button content-link customer-content-link">Оформить заказ</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+    <section class="main-section-contacts">
+      <h2 class="visually-hidden">Информация для связи</h2>
+      <div class="shop-description-container">
+        <p class="shop-description">Интернет-магазин <br>
+          строительных материалов <br>
+          и инструментов для ремонта</p>
+      </div>
+      <div class="contact-inf">
+        <div class="main-phone-number">
+          <a class="contact-phone" href="tel:+78125550555">+7 (812) 555-05-55</a>
+        </div>
+        <p class="contact-description">г. Санкт-Петербург, ул. Б. Конюшенная, д. 19/8</p>
+      </div>
+      {% if not current_user.is_authenticated %}
+        <ul class="contact-links-list special-ul">
+          <li class="contact-links-item contact-login-item">
+            <a href="/login" class="login-link contact-link">Войти</a>
+          </li>
+          <li class="contact-links-item contact-registration-item">
+            <a href="/register" class="registration-link contact-link">Регистрация</a>
+          </li>
+        </ul>
+      {% else %}
+       <a href="/user_profile" class="btn btn-primary btn-profile">
+            Мой профиль
+        </a>
+        <div class="login-username">
+          <a href="/logout" class="btn btn-primary btn-exit">Выйти</a>
+        </div>
+      {% endif %}
+    </section>
+    <section>
+      <h2 class="visually-hidden">Навигация</h2>
+      <nav class="site-navigation">
+        <ul class="site-navigation-list special-ul">
+          <li class="site-navigation-item special-content-item">
+            <a href="../index" class="content-link header-nav-link">Главная</a>
+          </li>
+          <li class="site-navigation-item special-content-item">
+            <a href="" class="content-link header-nav-link">Компания</a>
+          </li>
+          <li class="site-navigation-item special-content-item">
+            <a href="catalog/1" class="content-link header-nav-link">Каталог</a>
+          </li>
+          <li class="site-navigation-item special-content-item">
+            <a href="" class="content-link header-nav-link">Новости</a>
+          </li>
+          <li class="site-navigation-item special-content-item">
+            <a href="school.html" class="content-link header-nav-link">О нас</a>
+          </li>
+          <li class="site-navigation-item special-content-item">
+            <a href="" class="content-link header-nav-link">Доставка</a>
+          </li>
+          <li class="site-navigation-item special-content-item">
+            <a href="" class="content-link header-nav-link">Контакты</a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+  </header>
+  <h1 style="text-align: center; margin-bottom: 60px;">Товары, которые вам понравились:</h1>
+  <ul class="popular-goods-list special-ul">
+    {% for item in goods %}
+        <li class="popular-goods-item popular-goods-item-1">
+          <img src=../{{item.image}} alt="картинка с дрелью 9000-модели" width="184" height="164"
+            class="bosch-item-img bosch-item-1">
+          <h3 class='goods-naming'>{{item.name}}</h3>
+          <p class="goods-cost">{{item.price}}</p>
+          <a href="" class="cost-button">{{item.discount_price}}</a>
+          <div class="action-button-wrapper">
+            <form class="" action="{{ url_for('delete_from_cart', good_id=item.id) }}" method="post">
+              <button class="in-bookmarks-button from_bookmarks_btn" type="submit">Удалить</button>
+            </form>
+          </div>
+        </li>
+    {% endfor %}
+      </ul>
+<footer class="main-footer">
+    <section class="footer-special-inf">
+      <h2 class="visually-hidden">Полезные ссылки</h2>
+      <div class="main-footer-address">
+        <div class="footer-logo">
+          <a href="">
+            <img src="../static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="138" height="23"
+              class="logo-img footer-logo-img">
+          </a>
+        </div>
+        <aside class="footer-block-contacts">
+          <p class="contact-description contact-description-special footer-contact-description">г. Санкт-Петербург, ул.
+            Б. Конюшенная, д. 19/8</p>
+          <a href="tel:+78125550555" class="footer-contact-phone">+7 (812) 555-05-55</a>
+        </aside>
+      </div>
+      <div class="helpful-links-container">
+        <ul class="helpful-links-list special-ul">
+          <li>
+            <a href="" class="helpful-links-item content-link">Компания</a>
+          </li>
+          <li>
+            <a href="" class="helpful-links-item content-link">Новости</a>
+          </li>
+          <li>
+            <a href="" class="helpful-links-item content-link">Каталог</a>
+          </li>
+          <li>
+            <a href="" class="helpful-links-item content-link">Доставка</a>
+          </li>
+          <li>
+            <a href="" class="helpful-links-item content-link">Контакты</a>
+          </li>
+        </ul>
+        <ul class="footer-nav special-ul">
+          <li>
+            <a href="" class="content-link">Материалы</a>
+          </li>
+          <li>
+            <a href="" class="content-link">Техника</a>
+          </li>
+          <li>
+            <a href="" class="content-link">Инструмент</a>
+          </li>
+          <li>
+            <a href="" class="content-link">Спецпредложения</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section class="footer-contacts">
+      <div class="footer-contacts-container">
+        <h2 class="visually-hidden">Для связи с нами:</h2>
+        <div class="content-text-container">
+          <p class="footer-content-text">© 2010–2019 Компания «Техномарт»<br>
+            Все права защищены</p>
+        </div>
+        <ul class="footer-icon-list special-ul">
+          <li class="footer-icon-item">
+            <a href="" class="footer-social-button">
+              <span class="visually-hidden">ВКонтакте</span>
+              <svg aria-hidden="true" focusable="false" width="26" height="15" viewBox="0 0 26 15" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M15.5403 11.7281C16.4609 11.4384 17.6395 13.6406 18.8943 14.4834C19.836 15.1219 20.5573 14.9841 20.5573 14.9841L23.9017 14.9372C23.9017 14.9372 25.6495 14.8322 24.8232 13.4803C24.7549 13.3678 24.3389 12.4781 22.334 10.6472C20.2376 8.73186 20.5217 9.04218 23.0456 5.73093C24.5835 3.71249 25.1988 2.47968 25.0062 1.95468C24.8213 1.44936 23.6918 1.58061 23.6918 1.58061L19.9237 1.60593C19.5568 1.60686 19.2458 1.71749 19.1042 2.08874C19.1013 2.09249 18.5062 3.65061 17.7127 4.9753C16.0362 7.77749 15.3669 7.92655 15.0896 7.75124C14.4531 7.3453 14.6139 6.1228 14.6139 5.25374C14.6139 2.5378 15.0299 1.4053 13.7992 1.1128C13.388 1.0153 13.0876 0.951552 12.0389 0.942177C10.6985 0.922489 9.56027 0.942177 8.91508 1.25061C8.48656 1.45968 8.15819 1.91811 8.35753 1.94436C8.6079 1.97718 9.1693 2.09436 9.46975 2.49374C9.8559 3.01124 9.84434 4.17093 9.84434 4.17093C9.84434 4.17093 10.0649 7.36874 9.32434 7.7653C8.8159 8.03718 8.12064 7.48218 6.62516 4.9378C5.86153 3.63655 5.28471 2.19843 5.28471 2.19843C5.28471 2.19843 5.17301 1.93124 4.97079 1.78499C4.73005 1.61155 4.39301 1.55624 4.39301 1.55624L0.816563 1.57874C0.816563 1.57874 0.27923 1.59374 0.0818227 1.82436C-0.0934366 2.02874 0.0673782 2.45061 0.0673782 2.45061C0.0673782 2.45061 2.86864 8.90155 6.04064 12.1509C8.94879 15.1341 12.2537 14.9362 12.2537 14.9362H13.7511C13.7511 14.9362 14.2027 14.8856 14.4338 14.6437C14.6495 14.4187 14.6399 13.9959 14.6399 13.9959C14.6399 13.9959 14.61 12.0187 15.5403 11.7281Z"
+                  fill="white" />
+              </svg>
+            </a>
+          </li>
+          <li class="footer-icon-item">
+            <a href="" class="footer-social-button">
+              <span class="visually-hidden">Фейсбук</span>
+              <svg aria-hidden="true" focusable="false" width="12" height="22" viewBox="0 0 12 22" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V0H8C5.79086 0 4 1.79086 4 4V8H0V12H4V22H8V12H12V8H8V4H12Z" fill="white" />
+              </svg>
+            </a>
+          </li>
+          <li class="footer-icon-item">
+            <a href="" class="footer-social-button">
+              <span class="visually-hidden">Инстаграм</span>
+              <svg aria-hidden="true" focusable="false" width="21" height="21" viewBox="0 0 21 21" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M3 0H18C19.65 0 21 1.35 21 3V18C21 19.65 19.65 21 18 21H3C1.35 21 0 19.65 0 18V3C0 1.35 1.35 0 3 0ZM14 10.5C14 8.57 12.43 7 10.5 7C8.57 7 7 8.57 7 10.5C7 12.43 8.57 14 10.5 14C12.43 14 14 12.43 14 10.5ZM3 18V9H4.181C4.0626 9.49127 4.00186 9.99467 4 10.5C4 14.0899 6.91015 17 10.5 17C14.0899 17 17 14.0899 17 10.5C16.9986 9.99464 16.9379 9.49118 16.819 9H18V18H3ZM14 7H18V3H14V7Z"
+                  fill="white" />
+              </svg>
+            </a>
+          </li>
+        </ul>
+        <div class="footer-main-contacts">
+          <p class="footer-content-text footer-contact-text">Обратная связь:<br>
+            <a href="" class="footer-email-link footer-contact-link">mail@htmlacademy.ru</a>
+          </p>
+          <p class="footer-content-text footer-contact-text">Разработано —<br>
+            <a href="https://htmlacademy.ru/intensive/htmlcss"
+              class="footer-site-link footer-contact-link">htmlacademy.ru</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </footer>
+</body>

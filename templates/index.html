@@ -3,11 +3,11 @@
 
 <head>
   <link rel="icon" href="favicon.ico">
-  <link rel="icon" href="./static/img/icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="../static/img/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="180.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link href="./static/css/normalize.css" rel="stylesheet">
-  <link href="./static/css/style.css" rel="stylesheet">
+  <link href="../static/css/normalize.css" rel="stylesheet">
+  <link href="../static/css/style.css" rel="stylesheet">
   <meta charset="utf-8">
   <title>HTML Academy: Техномарт</title>
 </head>
@@ -19,25 +19,26 @@
       <h2 class="visually-hidden">Главная</h2>
       <div class="header-special-navigation">
         <a href="" class="main-logo">
-          <img src="./static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="108" height="18"
+          <img src="../static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="108" height="18"
             class="logo-img">
         </a>
         <nav class="customer-navigation">
           <ul class="customer-navigation-list special-ul">
             <li class="customer-list-item">
-              <form class="main-form">
-                <label for="searching-field" class="visually-hidden">Поиск:</label>
-                <input type='text' name='searching' id='searching-field' class="text-field special-text-field"
-                  placeholder="Поиск:">
+              <form class="main-form" method="post" action="">
+                {{ form.csrf_token }}
+                <label class="visually-hidden">Поиск:</label>
+                {{ form.product(class="form-control", id='searching-field', class="text-field special-text-field",
+                  placeholder="Поиск:") }}
                 <div class="for-icon"></div>
-                <button type="submit" class="visually-hidden"></button>
+                {{ form.submit(type="submit", class="visually-hidden") }}
               </form>
             </li>
             <li class="customer-list-item customer-list-item-active bookmark">
-              <a href="" class="content-link customer-content-link">Закладки: 0</a>
+              <a href="/bookmark" class="content-link customer-content-link">Закладки: {{bookmarks_count}}</a>
             </li>
             <li class="customer-list-item customer-list-item-active cart">
-              <a href="" class="content-link customer-content-link">Корзина: 0</a>
+              <a href="/cart" class="content-link customer-content-link">Корзина: {{cart_count}}</a>
             </li>
             <li class="customer-list-item">
               <a href="" class="section-customer-button content-link customer-content-link">Оформить заказ</a>
@@ -59,27 +60,36 @@
         </div>
         <p class="contact-description">г. Санкт-Петербург, ул. Б. Конюшенная, д. 19/8</p>
       </div>
-      <ul class="contact-links-list special-ul">
-        <li class="contact-links-item contact-login-item">
-          <a href="" class="login-link contact-link">Войти</a>
-        </li>
-        <li class="contact-links-item contact-registration-item">
-          <a href="/register" class="registration-link contact-link">Регистрация</a>
-        </li>
-      </ul>
+      {% if not current_user.is_authenticated %}
+        <ul class="contact-links-list special-ul">
+          <li class="contact-links-item contact-login-item">
+            <a href="/login" class="login-link contact-link">Войти</a>
+          </li>
+          <li class="contact-links-item contact-registration-item">
+            <a href="/register" class="registration-link contact-link">Регистрация</a>
+          </li>
+        </ul>
+      {% else %}
+        <div class="login-username">
+          <a href="/user_profile" class="btn btn-primary btn-profile">
+            Мой профиль
+          </a>
+          <a href="/logout" class="btn btn-primary btn-exit">Выйти</a>
+        </div>
+      {% endif %}
     </section>
     <section>
       <h2 class="visually-hidden">Навигация</h2>
       <nav class="site-navigation">
         <ul class="site-navigation-list special-ul">
           <li class="site-navigation-item special-content-item">
-            <a href="index.html" class="content-link header-nav-link">Главная</a>
+            <a href="/index" class="content-link header-nav-link">Главная</a>
           </li>
           <li class="site-navigation-item special-content-item">
             <a href="" class="content-link header-nav-link">Компания</a>
           </li>
           <li class="site-navigation-item special-content-item">
-            <a href="catalog.html" class="content-link header-nav-link">Каталог</a>
+            <a href="catalog/1" class="content-link header-nav-link">Каталог</a>
           </li>
           <li class="site-navigation-item special-content-item">
             <a href="" class="content-link header-nav-link">Новости</a>
@@ -126,9 +136,9 @@
               <p class="good-title-add">Настоящие мужские игрушки</p>
             </div>
             <a href="catalog.html" class="button goods-cards-button">Открыть каталог</a>
-            <button type="button" class="slider-back"><img src="./static/img/icons/icon-left.svg" alt="пролистнуть слайдер назад"
+            <button type="button" class="slider-back"><img src="../static/img/icons/icon-left.svg" alt="пролистнуть слайдер назад"
                 width="22" height="40"></button>
-            <button type="button" class="slider-next"><img src="./static/img/icons/icon-right.svg"
+            <button type="button" class="slider-next"><img src="../static/img/icons/icon-right.svg"
                 alt="пролистнуть слайдер вперед" width="22" height="40"></button>
             <button type="button" class="slide-1" aria-label="первый слайд неактивен">
               <span class="slide"></span>
@@ -144,10 +154,10 @@
             </div>
             <a href="catalog.html" class="button goods-cards-button">Открыть каталог</a>
             <button type="button" class="slider-back">
-              <img src="./static/img/icons/icon-left.svg" alt="пролистнуть слайдер назад" width="22" height="40">
+              <img src="../static/img/icons/icon-left.svg" alt="пролистнуть слайдер назад" width="22" height="40">
             </button>
             <button type="button" class="slider-next">
-              <img src="./static/img/icons/icon-right.svg" alt="пролистнуть слайдер вперед" width="22" height="40">
+              <img src="../static/img/icons/icon-right.svg" alt="пролистнуть слайдер вперед" width="22" height="40">
             </button>
             <button type="button" class="slide-1" aria-label="первый слайд активен">
               <span class="slide slide-active"></span>
@@ -179,52 +189,29 @@
         <p class="content-title">Популярные товары:</p>
         <a href="" class="button popular-button">все популярные товары</a>
       </article>
-      <ul class="popular-goods-list special-ul">
-        <li class="popular-goods-item popular-goods-item-1">
-          <img src="./static/img/bosch-tools/bosch-9000.jpg" alt="картинка с дрелью 9000-модели" width="184" height="164"
-            class="bosch-item-img bosch-item-1">
-          <h3 class='goods-naming'>Перфоратор BOSCH BFG 9000</h3>
-          <p class="goods-cost">32500 Р.</p>
-          <a href="" class="cost-button">25500 Р.</a>
-          <div class="action-button-wrapper">
-            <a href="#" class="buying-button">Купить</a>
-            <a href="#" class="in-bookmarks-button">В закладки</a>
-          </div>
-        </li>
-        <li class="popular-goods-item popular-goods-item-2">
-          <img src="./static/img/bosch-tools/bosch-3000.jpg" alt="картинка с дрелью 3000-модели" width="127" height="112"
-            class="bosch-item-img bosch-item-2">
-          <h3 class='goods-naming goods-naming-special'>Перфоратор BOSCH BFG 3000</h3>
-          <p class="goods-cost">22500 Р.</p>
-          <a href="" class="cost-button">15500 Р.</a>
-          <div class="action-button-wrapper">
-            <a href="#" class="buying-button">Купить</a>
-            <a href="#" class="in-bookmarks-button">В закладки</a>
-          </div>
-        </li>
-        <li class="popular-goods-item popular-goods-item-3">
-          <img src="./static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128"
-            class="bosch-item-img bosch-item-3">
-          <h3 class='goods-naming'>Перфоратор BOSCH BFG 6000</h3>
-          <p class="goods-cost">30500 Р.</p>
-          <a href="" class="cost-button">25500 Р.</a>
-          <div class="action-button-wrapper">
-            <a href="#" class="buying-button">Купить</a>
-            <a href="#" class="in-bookmarks-button">В закладки</a>
-          </div>
-        </li>
-        <li class="popular-goods-item popular-goods-item-4">
-          <img src="./static/img/bosch-tools/bosch-2000.jpg" alt="картинка с дрелью 2000-модели" width="127" height="112"
-            class="bosch-item-img bosch-item-4">
-          <h3 class='goods-naming goods-naming-special'>Перфоратор BOSCH BFG 2000</h3>
-          <p class="goods-cost">22500 Р.</p>
-          <a href="" class="cost-button">12500 Р.</a>
-          <div class="action-button-wrapper">
-            <a href="#" class="buying-button">Купить</a>
-            <a href="#" class="in-bookmarks-button">В закладки</a>
-          </div>
-        </li>
-      </ul>
+      {% if goods %}
+          <ul class="popular-goods-list special-ul" id="popular_goods_on_index_page">
+            {% for item in goods%}
+              <li class="popular-goods-item">
+                <div class="catalog-goods-img bosch-item-img">
+                  <img src="..{{item.image}}" alt="картинка с {{item.name}}" width="144" height="128">
+                </div>
+                <h3 class='catalog-goods-naming'>{{item.name}}</h3>
+                <a href="" class="catalog-cost-button">{{item.price}} Р.</a>
+                  <div class="action-button-wrapper">
+                    <form class="" action="{{ url_for('add_to_cart_from_index', good_id=item.id) }}" method="post">
+                      <button class="buying-button" type="submit">Купить</button>
+                    </form>
+                    <form class="" action="{{ url_for('add_to_bookmark_from_index', good_id=item.id) }}" method="post">
+                      <button class="in-bookmarks-button" type="submit">В закладки</button>
+                    </form>
+                  </div>
+              </li>
+            {% endfor %}
+          </ul>
+      {% else %}
+          <ul class="catalog-goods-list special-ul" style="height: 575px"></ul>
+      {% endif %}
     </section>
     <section class="popular-manufacturers">
       <h2 class="visually-hidden">Популярные производители</h2>
@@ -235,49 +222,49 @@
       <ul class="manufacturers-list special-ul">
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/bosch-company.png" alt="Компания bosch" width="126" height="37"
+            <img src="../static/img/companies/bosch-company.png" alt="Компания bosch" width="126" height="37"
               class="manufacturer-img-1">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/makita.png" alt="Компания Makita" width="123" height="40"
+            <img src="../static/img/companies/makita.png" alt="Компания Makita" width="123" height="40"
               class="manufacturer-img-2">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/dewalt.png" alt="Компания DeWALT" width="146" height="44"
+            <img src="../static/img/companies/dewalt.png" alt="Компания DeWALT" width="146" height="44"
               class="manufacturer-img-3">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/interschol.png" alt="Компания Интерскол" width="200" height="76"
+            <img src="../static/img/companies/interschol.png" alt="Компания Интерскол" width="200" height="76"
               class="manufacturer-img-4">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/hitachi.png" alt="Компания Hitachi" width="169" height="31"
+            <img src="../static/img/companies/hitachi.png" alt="Компания Hitachi" width="169" height="31"
               class="manufacturer-img-5">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/lg.png" alt="Компания LG" width="121" height="73"
+            <img src="../static/img/companies/lg.png" alt="Компания LG" width="121" height="73"
               class="manufacturer-img-6">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/aeg.png" alt="Компания AEG" width="151" height="96"
+            <img src="../static/img/companies/aeg.png" alt="Компания AEG" width="151" height="96"
               class="manufacturer-img-7">
           </a>
         </li>
         <li class="manufacturer-item">
           <a href="">
-            <img src="./static/img/companies/metabo.png" alt="Компания Metabo" width="204" height="69"
+            <img src="../static/img/companies/metabo.png" alt="Компания Metabo" width="204" height="69"
               class="manufacturer-img-8">
           </a>
         </li>
@@ -348,7 +335,7 @@
         </p>
         <figure class="map-wrapper">
           <a href="#">
-            <img src="./static/img/other-img/index-map.png" alt="Карта с адресом: 'Большая Конюшенная улицa, 19'" width="300"
+            <img src="../static/img/other-img/index-map.png" alt="Карта с адресом: 'Большая Конюшенная улицa, 19'" width="300"
               height="158" class="contacts-img">
           </a>
         </figure>
@@ -362,7 +349,7 @@
       <div class="main-footer-address">
         <div class="footer-logo">
           <a href="">
-            <img src="./static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="138" height="23"
+            <img src="../static/img/other-img/logo-technomart.svg" alt="Логотип магазина Техномарт" width="138" height="23"
               class="logo-img footer-logo-img">
           </a>
         </div>

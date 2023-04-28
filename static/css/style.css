@@ -205,6 +205,7 @@
   width: 940px;
   margin: 0 auto;
   margin-bottom: 40px;
+  justify-content: space-between;
 }
 
 .text-field{
@@ -415,7 +416,6 @@
 }
 
 .contact-inf {
-  margin-right: 62px;
   text-align: center;
 }
 
@@ -480,6 +480,8 @@
 
 .catalog-contact-links-list{
   width: 296px;
+  display: flex;
+  justify-content: center;
 }
 
 .contact-links-item{
@@ -1703,6 +1705,7 @@ grid-column: 3/4;
   border: 1px solid var(--basic-border-color);
   box-sizing: border-box;
   margin-top: -11px;
+  margin-bottom: 30px;
 }
 
 .catalog-sorting-link{
@@ -1780,16 +1783,7 @@ grid-column: 3/4;
   text-align: center;
   padding: 12px 57px 12px 53px;
   margin-bottom: 7px;
-}
 
-.contact-user-item::before{
-  content: "";
-  position: absolute;
-  background: url(../img/icons/icon-user.svg);
-  width: 20px;
-  height: 18px;
-  bottom: 15px;
-  left: 11px;
 }
 
 .contact-user-item::after{
@@ -1806,16 +1800,8 @@ grid-column: 3/4;
   background: url(../img/icons/catalog-icon-login-blue.svg);
 }
 
-.contact-user-item:hover::before{
-  background: url(../img/icons/icon-user-blue.svg);
-}
-
 .contact-user-item:active::after{
   background: url(../img/icons/grey-icon-login.svg);
-}
-
-.contact-user-item:active::before{
-  background: url(../img/icons/grey-icon-user.svg);
 }
 
 .catalog-contact-container{
@@ -1936,10 +1922,13 @@ grid-column: 3/4;
   }
 
 .catalog-goods{
-    margin-bottom: 58px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
-.catalog-goods-list{
+.catalog_goods_ls{
     display: grid;
     grid-template-columns: repeat(3, 220px);
     gap: 20px;
@@ -1981,10 +1970,11 @@ grid-column: 3/4;
   display: flex;
   flex-wrap: wrap;
   top: 36px;
-  left: 38px;
+  left: 42px;
 }
 
 .buying-button{
+  border: none;
   position: relative;
   font-family: "Cuprum", Arial, sans-serif;;
   font-style: normal;
@@ -2031,6 +2021,10 @@ grid-column: 3/4;
   padding: 8px 33px 6px 30px;
   border: 3px solid var(--basic-dark-green);
   border-radius: 2px;
+}
+
+.from_bookmarks_btn{
+    width: 135px;
 }
 
 .in-bookmarks-button:hover{
@@ -2663,4 +2657,56 @@ grid-column: 3/4;
 
 .registration_title{
     margin-top: 40px;
+}
+
+.login-username {
+    text-align: center;
+    padding-left: 10px;
+    display: flex;
+}
+
+.login-username a {
+    text-decoration: inherit;
+}
+
+.btn-profile {
+    color: white;
+    text-decoration: none;
+    font-size: 21px;
+    display: block;
+    padding: 8px 12px;
+    background: #32425C;
+    border-radius: 10px;
+    margin-top: -20px;
+}
+
+.btn-profile:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.btn-profile:active {
+    opacity: 0.5;
+    text-decoration: none;
+}
+
+.btn-exit {
+    color: white;
+    margin-top: -20px;
+    display: block;
+    margin-left: 20px;
+    font-size: 21px;
+    padding: 8px;
+    border-radius: 10px;
+    background: #32425C;
+}
+
+.btn-exit:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.btn-exit:active {
+    opacity: 0.5;
+    text-decoration: none;
 }
