@@ -131,32 +131,19 @@
         <div class="catalog-filter-wrapper">
           <h2 class="catalog-filter special-zeroing" tabindex="0">Фильтр:</h2>
         </div>
-        <form action="https://echo.htmlacademy.ru/" method="post">
+        <form action="" method="POST" novalidate>
+          {{ form.hidden_tag() }}
           <section class="catalog-filter catalog-filter-cost">
             <h2 class="visually-hidden">Контроль цены</h2>
             <fieldset class="filter-item">
               <legend>Цена:</legend>
               <div class="range-filter">
-                <div class="range-controls">
-                  <div class="scale">
-                    <div class="bar" style="
-                        width: 80%;
-                        margin-left: 0%
-                      "></div>
-                  </div>
-                  <div class="toggle toggle-min" tabindex="0" style="
-                      left: 9%
-                    " aria-label="назначить минимальную цену"></div>
-                  <div class="toggle toggle-max" tabindex="0" style="
-                      left: 73%
-                    " aria-label="назначить максимальную цену"></div>
-                </div>
                 <div class="price-controls">
                   <label class="min-price">
-                    <input type="text" name="min-price" value="0">
+                    {{ form.price_from(min="0", max=max_value, value=min_price) }}
                   </label>
                   <label class="max-price">
-                    <input type="text" name="max-price" value="30000">
+                    {{ form.price_to(min="0", max=max_value, value=max_price) }}
                   </label>
                 </div>
               </div>
@@ -166,37 +153,33 @@
             <h3 class="filter-title filter-title-2" tabindex="0">производители:</h3>
             <ul class="catalog-choice-list special-ul">
               <li class="catalog-choice-item">
-                <input type="checkbox" name="checkbox-1" id="check-of-bosch" checked
-                  class="catalog-choice-checkbox visually-hidden">
+                {{ form.bosch_producer(id="check-of-bosch", class="catalog-choice-checkbox visually-hidden", checked=(True if "bosch" in producers else False)) }}
                 <label for="check-of-bosch" class="label" tabindex="0">bosch</label>
               </li>
 
               <li class="catalog-choice-item">
-                <input type="checkbox" name="checkbox-2" id="check-of-interschol"
-                  class="catalog-choice-checkbox visually-hidden">
+                {{ form.interscol_producer(id="check-of-interschol", class="catalog-choice-checkbox visually-hidden", checked=(True if "интерскол" in producers else False)) }}
                 <label for="check-of-interschol" class="label" tabindex="0">Интерскол</label>
               </li>
 
               <li class="catalog-choice-item">
-                <input type="checkbox" name="checkbox-3" id="check-of-makita"
-                  class="catalog-choice-checkbox visually-hidden">
+                {{ form.makita_producer(id="check-of-makita", class="catalog-choice-checkbox visually-hidden", checked=(True if "makita" in producers else False)) }}
                 <label for="check-of-makita" class="label" tabindex="0">makita</label>
               </li>
 
               <li class="catalog-choice-item">
-                <input type="checkbox" name="checkbox-4" id="check-of-dewalt"
-                  class="catalog-choice-checkbox visually-hidden">
+                {{ form.dewalt_producer(id="check-of-dewalt", class="catalog-choice-checkbox visually-hidden", checked=(True if "dewalt" in producers else False)) }}
                 <label for="check-of-dewalt" class="label" tabindex="0">Dewalt</label>
               </li>
 
               <li class="catalog-choice-item">
-                <input type="checkbox" name="checkbox-5" id="check-of-hitachi"
-                  class="catalog-choice-checkbox visually-hidden">
+                {{ form.HITACHI_producer(id="check-of-hitachi", class="catalog-choice-checkbox visually-hidden", checked=(True if "hitachi" in producers else False)) }}
                 <label for="check-of-hitachi" class="label" tabindex="0">Hitachi</label>
               </li>
             </ul>
           </section>
           <section>
+            {{ form.submit(class="catalog-choice-button", tabindex="0") }}
             <h2 class="filter-title filter-title-charge">Питание:</h2>
             <ul class="catalog-choice-list radio-choice-list special-ul">
               <li class="catalog-choice-item catalog-radio-item">
@@ -216,29 +199,6 @@
       <section class="catalog-goods">
         <div>
           <h2 class="visually-hidden">список товаров</h2>
-          <article class="catalog-filter catalog-goods-filter">
-            <h2 class="visually-hidden">Сортировка товаров</h2>
-            <div class="sorting-wrapper">
-              <p class="special-zeroing sorting-p">Сортировка:</p>
-            </div>
-            <ul class="catalog-sorting-list special-ul">
-              <li class="catalog-sorting-item catalog-sorting-item-1">
-                <a href="" class="catalog-sorting-link">по цене</a>
-              </li>
-              <li class="catalog-sorting-item catalog-sorting-item-2">
-                <a href="" class="catalog-sorting-link">по типу</a>
-              </li>
-              <li class="catalog-sorting-item catalog-sorting-item-3">
-                <a href="" class="catalog-sorting-link">по функционалу</a>
-              </li>
-              <li class="catalog-sorting-item catalog-sorting-item-4">
-                <a href="" class="catalog-sorting-link" aria-label="показать больше товаров"></a>
-              </li>
-              <li class="catalog-sorting-item catalog-sorting-item-5">
-                <a href="" class="catalog-sorting-link" aria-label="показать меньше товаров"></a>
-              </li>
-            </ul>
-          </article>
             {% if goods %}
               <ul class="catalog_goods_ls special-ul">
                 {% for item in goods%}
@@ -464,8 +424,8 @@
     </form>
     <button type="button" class="modal-closing-button catalog-modal-closing-button" aria-label="Закрыть"></button>
   </section>
+
   <script src="../static/js/catalog-format.js"></script>
 </body>
-
 </html>
 {% endblock %}

@@ -13,6 +13,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from flask_restful import Api
 
 from forms.user import RegisterForm, LoginForm
+from forms.filtering import FilteringForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -170,9 +171,37 @@ def edit_user():
 
 @app.route('/catalog/<int:page_idx>', methods=["GET", "POST"])
 def catalog(page_idx=1):
+    filtering_form = FilteringForm()
+    if filtering_form.validate_on_submit():
+        producers = list(
+            map(lambda i: i.label.text.lower(), filter(
+                lambda i: i.data,
+                [
+                    filtering_form.bosch_producer,
+                    filtering_form.dewalt_producer,
+                    filtering_form.HITACHI_producer,
+                    filtering_form.interscol_producer,
+                    filtering_form.makita_producer
+                ]
+            ))
+        )
+        params = {
+            'price_from': filtering_form.price_from.data,
+            'price_to': filtering_form.price_to.data,
+            'producers': ",".join(producers) if producers else "all"
+        }
+        return redirect(f"/catalog/1?{'&'.join(f'{i}={params[i]}' for i in params)}")
+
     db_sess = db_session.create_session()
-    goods = db_sess.query(Products).filter(Products.id > 9 * (page_idx - 1), Products.id <= 9 * page_idx).all()
-    goods_count = db_sess.query(Products).count()
+    price_from = request.args.get('price_from', 0, int)
+    price_to = request.args.get('price_to', max(db_sess.query(Products).all(), key=lambda i: i.price).price, int)
+    producers = request.args.get('producers', 'all', str)
+
+    goods = list(filter(
+        lambda i: i.producer.name.lower() in producers if producers != 'all' else True,
+        db_sess.query(Products).filter(price_from <= Products.price, Products.price <= price_to).all()
+    ))
+    goods_count = len(goods)
     if float(goods_count // 9) == goods_count / 9:
         goods_count = goods_count // 9
     else:
@@ -188,6 +217,19 @@ def catalog(page_idx=1):
         cart_count = 0
     return render_template("catalog.html", goods=goods, current_page=page_idx,
                            goods_count=goods_count, bookmarks_count=bookmarks_count, cart_count=cart_count)
+    goods = goods[9 * (page_idx - 1):page_idx * 9]
+
+    return render_template(
+        "catalog.html",
+        goods=goods,
+        current_page=page_idx,
+        goods_count=goods_count,
+        form=filtering_form,
+        min_price=price_from,
+        max_price=price_to,
+        max_value=max(db_sess.query(Products).all(), key=lambda i: i.price).price,
+        producers=producers
+    )
 
 
 @login_manager.user_loader
@@ -317,16 +359,7 @@ def add_to_bookmark_from_index():
         return redirect(f"/login")
 
 
-@app.route("/delete_from_cart", methods=['post'])
-def delete_from_cart():
-    good_id = request.args.get("good_id")
-    db_sess = db_session.create_session()
-    users_cart_products = db_sess.query(UsersCartProducts).filter(UsersCartProducts.user_id == current_user.id,
-                                                                  UsersCartProducts.cart_product_id == good_id).first()
-    db_sess.delete(users_cart_products)
-    db_sess.commit()
-
-    return redirect("/cart")
+    return render_template("bookmark.html", goods=goods)
 
 
 def main():
