@@ -120,7 +120,6 @@ def user_profile():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.password.data = current_user.password
-        print(current_user.password)
     else:
         abort(404)
     return render_template('user_profile.html', title='Мой профиль', form=form)
