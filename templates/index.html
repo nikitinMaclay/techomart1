@@ -34,10 +34,10 @@
               </form>
             </li>
             <li class="customer-list-item customer-list-item-active bookmark">
-              <a href="/bookmark" class="content-link customer-content-link">Закладки: 0</a>
+              <a href="/bookmark" class="content-link customer-content-link">Закладки: {{bookmarks_count}}</a>
             </li>
             <li class="customer-list-item customer-list-item-active cart">
-              <a href="" class="content-link customer-content-link">Корзина: 0</a>
+              <a href="/cart" class="content-link customer-content-link">Корзина: {{cart_count}}</a>
             </li>
             <li class="customer-list-item">
               <a href="" class="section-customer-button content-link customer-content-link">Оформить заказ</a>
@@ -82,7 +82,7 @@
       <nav class="site-navigation">
         <ul class="site-navigation-list special-ul">
           <li class="site-navigation-item special-content-item">
-            <a href="index.html" class="content-link header-nav-link">Главная</a>
+            <a href="/index" class="content-link header-nav-link">Главная</a>
           </li>
           <li class="site-navigation-item special-content-item">
             <a href="" class="content-link header-nav-link">Компания</a>
@@ -188,52 +188,29 @@
         <p class="content-title">Популярные товары:</p>
         <a href="" class="button popular-button">все популярные товары</a>
       </article>
-      <ul class="popular-goods-list special-ul">
-        <li class="popular-goods-item popular-goods-item-1">
-          <img src="../static/img/bosch-tools/bosch-9000.jpg" alt="картинка с дрелью 9000-модели" width="184" height="164"
-            class="bosch-item-img bosch-item-1">
-          <h3 class='goods-naming'>Перфоратор BOSCH BFG 9000</h3>
-          <p class="goods-cost">32500 Р.</p>
-          <a href="" class="cost-button">25500 Р.</a>
-          <div class="action-button-wrapper">
-            <a href="#" class="buying-button">Купить</a>
-            <a href="#" class="in-bookmarks-button">В закладки</a>
-          </div>
-        </li>
-        <li class="popular-goods-item popular-goods-item-2">
-          <img src="../static/img/bosch-tools/bosch-3000.jpg" alt="картинка с дрелью 3000-модели" width="127" height="112"
-            class="bosch-item-img bosch-item-2">
-          <h3 class='goods-naming goods-naming-special'>Перфоратор BOSCH BFG 3000</h3>
-          <p class="goods-cost">22500 Р.</p>
-          <a href="" class="cost-button">15500 Р.</a>
-          <div class="action-button-wrapper">
-            <a href="#" class="buying-button">Купить</a>
-            <a href="#" class="in-bookmarks-button">В закладки</a>
-          </div>
-        </li>
-        <li class="popular-goods-item popular-goods-item-3">
-          <img src="../static/img/bosch-tools/bosch-6000.jpg" alt="картинка с дрелью 6000-модели" width="144" height="128"
-            class="bosch-item-img bosch-item-3">
-          <h3 class='goods-naming'>Перфоратор BOSCH BFG 6000</h3>
-          <p class="goods-cost">30500 Р.</p>
-          <a href="" class="cost-button">25500 Р.</a>
-          <div class="action-button-wrapper">
-            <a href="#" class="buying-button">Купить</a>
-            <a href="#" class="in-bookmarks-button">В закладки</a>
-          </div>
-        </li>
-        <li class="popular-goods-item popular-goods-item-4">
-          <img src="../static/img/bosch-tools/bosch-2000.jpg" alt="картинка с дрелью 2000-модели" width="127" height="112"
-            class="bosch-item-img bosch-item-4">
-          <h3 class='goods-naming goods-naming-special'>Перфоратор BOSCH BFG 2000</h3>
-          <p class="goods-cost">22500 Р.</p>
-          <a href="" class="cost-button">12500 Р.</a>
-          <div class="action-button-wrapper">
-            <a href="#" class="buying-button">Купить</a>
-            <a href="#" class="in-bookmarks-button">В закладки</a>
-          </div>
-        </li>
-      </ul>
+      {% if goods %}
+          <ul class="popular-goods-list special-ul" id="popular_goods_on_index_page">
+            {% for item in goods%}
+              <li class="popular-goods-item">
+                <div class="catalog-goods-img bosch-item-img">
+                  <img src="..{{item.image}}" alt="картинка с {{item.name}}" width="144" height="128">
+                </div>
+                <h3 class='catalog-goods-naming'>{{item.name}}</h3>
+                <a href="" class="catalog-cost-button">{{item.price}} Р.</a>
+                  <div class="action-button-wrapper">
+                    <form class="" action="{{ url_for('add_to_cart_from_index', good_id=item.id) }}" method="post">
+                      <button class="buying-button" type="submit">Купить</button>
+                    </form>
+                    <form class="" action="{{ url_for('add_to_bookmark_from_index', good_id=item.id) }}" method="post">
+                      <button class="in-bookmarks-button" type="submit">В закладки</button>
+                    </form>
+                  </div>
+              </li>
+            {% endfor %}
+          </ul>
+      {% else %}
+          <ul class="catalog-goods-list special-ul" style="height: 575px"></ul>
+      {% endif %}
     </section>
     <section class="popular-manufacturers">
       <h2 class="visually-hidden">Популярные производители</h2>

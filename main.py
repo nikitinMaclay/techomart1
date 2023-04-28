@@ -5,6 +5,8 @@ from flask import Flask, render_template, redirect, request, make_response, abor
 from data import db_session
 from data.users import User
 from data.products import Products
+from data.users_products import UsersProducts
+from data.users_cart_products import UsersCartProducts
 
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
@@ -20,8 +22,51 @@ login_manager.init_app(app)
 
 
 @app.route("/")
+@app.route("/index")
 def index():
-    return render_template("index.html")
+    db_sess = db_session.create_session()
+    goods = db_sess.query(Products).filter(Products.id >= 1, Products.id <= 4).all()
+    if current_user.is_authenticated:
+        db_sess = db_session.create_session()
+        bookmarks_goods = db_sess.query(UsersProducts).filter(UsersProducts.user_id == current_user.id).all()
+        bookmarks_count = len(bookmarks_goods)
+        cart_goods = db_sess.query(UsersCartProducts).filter(UsersCartProducts.user_id == current_user.id).all()
+        cart_count = len(cart_goods)
+    else:
+        bookmarks_count = 0
+        cart_count = 0
+    return render_template("index.html", goods=goods, bookmarks_count=bookmarks_count, cart_count=cart_count)
+
+
+@app.route("/add_to_bookmarks", methods=['post'])
+def add_to_bookmarks():
+    if current_user.is_authenticated:
+        page_idx = request.args.get("current_pg")
+        good_id = request.args.get("good_id")
+        db_sess = db_session.create_session()
+        users_products = UsersProducts()
+        users_products.user_id = current_user.id
+        users_products.product_id = good_id
+        try:
+            db_sess.add(users_products)
+            db_sess.commit()
+        except:
+            pass
+        return redirect(f"/catalog/{page_idx}")
+    else:
+        return redirect(f"/login")
+
+
+@app.route("/delete_from_bookmarks", methods=['post'])
+def delete_from_bookmarks():
+    good_id = request.args.get("good_id")
+    db_sess = db_session.create_session()
+    users_products = db_sess.query(UsersProducts).filter(UsersProducts.user_id == current_user.id,
+                                                         UsersProducts.product_id == good_id).first()
+    db_sess.delete(users_products)
+    db_sess.commit()
+
+    return redirect("/bookmark")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -77,7 +122,7 @@ def user_profile():
         form.password.data = current_user.password
         print(current_user.password)
     else:
-            abort(404)
+        abort(404)
     return render_template('user_profile.html', title='Мой профиль', form=form)
 
 
@@ -130,7 +175,17 @@ def catalog(page_idx=1):
         goods_count = goods_count // 9
     else:
         goods_count = goods_count // 9 + 1
-    return render_template("catalog.html", goods=goods, current_page=page_idx, goods_count=goods_count)
+
+    if current_user.is_authenticated:
+        bookmarks_goods = db_sess.query(UsersProducts).filter(UsersProducts.user_id == current_user.id).all()
+        bookmarks_count = len(bookmarks_goods)
+        cart_goods = db_sess.query(UsersCartProducts).filter(UsersCartProducts.user_id == current_user.id).all()
+        cart_count = len(cart_goods)
+    else:
+        bookmarks_count = 0
+        cart_count = 0
+    return render_template("catalog.html", goods=goods, current_page=page_idx,
+                           goods_count=goods_count, bookmarks_count=bookmarks_count, cart_count=cart_count)
 
 
 @login_manager.user_loader
@@ -154,9 +209,122 @@ def bad_request(_):
 @app.route("/bookmark")
 def bookmark():
     db_sess = db_session.create_session()
-    goods = db_sess.query(Products).all()
+    if current_user.is_authenticated:
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
 
-    return render_template("bookmark.html", goods=goods)
+        goods = user.products
+
+        goods_count = len(goods)
+
+        cart_goods_count = len(user.cart_products)
+
+        return render_template("bookmark.html", goods=goods, goods_count=goods_count, cart_goods_count=cart_goods_count)
+
+    else:
+        return redirect("/login")
+
+
+@app.route("/cart")
+def cart():
+    db_sess = db_session.create_session()
+    if current_user.is_authenticated:
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+
+        goods = user.cart_products
+
+        cart_goods_count = len(goods)
+
+        goods_count = len(user.products)
+
+        return render_template("cart.html", goods=goods, cart_goods_count=cart_goods_count, goods_count=goods_count)
+
+    else:
+        return redirect("/login")
+
+
+@app.route("/add_to_cart", methods=['post'])
+def add_to_cart():
+    if current_user.is_authenticated:
+        page_idx = request.args.get("current_pg")
+        good_id = request.args.get("good_id")
+        db_sess = db_session.create_session()
+        users_cart_products = UsersCartProducts()
+        users_cart_products.user_id = current_user.id
+        users_cart_products.cart_product_id = good_id
+        try:
+            db_sess.add(users_cart_products)
+            db_sess.commit()
+        except:
+            pass
+        return redirect(f"/catalog/{page_idx}")
+    else:
+        return redirect(f"/login")
+
+
+@app.route("/add_to_cart_from_bookmarks", methods=['post'])
+def add_to_cart_from_bookmarks():
+    if current_user.is_authenticated:
+        good_id = request.args.get("good_id")
+        db_sess = db_session.create_session()
+        users_cart_products = UsersCartProducts()
+        users_cart_products.user_id = current_user.id
+        users_cart_products.cart_product_id = good_id
+        try:
+            db_sess.add(users_cart_products)
+            db_sess.commit()
+        except:
+            pass
+        return redirect(f"/bookmark")
+    else:
+        return redirect(f"/login")
+
+
+@app.route("/add_to_cart_from_index", methods=['post'])
+def add_to_cart_from_index():
+    if current_user.is_authenticated:
+        good_id = request.args.get("good_id")
+        db_sess = db_session.create_session()
+        users_cart_products = UsersCartProducts()
+        users_cart_products.user_id = current_user.id
+        users_cart_products.cart_product_id = good_id
+        try:
+            db_sess.add(users_cart_products)
+            db_sess.commit()
+        except:
+            pass
+        return redirect(f"/index")
+    else:
+        return redirect(f"/login")
+
+
+@app.route("/add_to_bookmark_from_index", methods=['post'])
+def add_to_bookmark_from_index():
+    if current_user.is_authenticated:
+        good_id = request.args.get("good_id")
+        db_sess = db_session.create_session()
+        users_products = UsersProducts()
+        users_products.user_id = current_user.id
+        users_products.product_id = good_id
+        try:
+            db_sess.add(users_products)
+            db_sess.commit()
+        except:
+            pass
+        return redirect(f"/index#popular_goods_on_index_page")
+    else:
+        return redirect(f"/login")
+
+
+@app.route("/delete_from_cart", methods=['post'])
+def delete_from_cart():
+    good_id = request.args.get("good_id")
+    db_sess = db_session.create_session()
+    users_cart_products = db_sess.query(UsersCartProducts).filter(UsersCartProducts.user_id == current_user.id,
+                                                                  UsersCartProducts.cart_product_id == good_id).first()
+    db_sess.delete(users_cart_products)
+    db_sess.commit()
+
+    return redirect("/cart")
 
 
 def main():

@@ -116,10 +116,7 @@
           <p class="goods-cost">{{item.price}}</p>
           <a href="" class="cost-button">{{item.discount_price}}</a>
           <div class="action-button-wrapper">
-            <form class="" action="{{ url_for('add_to_cart_from_bookmarks', good_id=item.id) }}" method="post">
-                        <button class="buying-button" type="submit">Купить</button>
-            </form>
-            <form class="" action="{{ url_for('delete_from_bookmarks', good_id=item.id) }}" method="post">
+            <form class="" action="{{ url_for('delete_from_cart', good_id=item.id) }}" method="post">
               <button class="in-bookmarks-button from_bookmarks_btn" type="submit">Удалить</button>
             </form>
           </div>
