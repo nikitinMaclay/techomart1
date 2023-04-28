@@ -73,6 +73,18 @@ def delete_from_bookmarks():
     return redirect("/bookmark")
 
 
+@app.route("/delete_from_cart", methods=['post'])
+def delete_from_cart():
+    good_id = request.args.get("good_id")
+    db_sess = db_session.create_session()
+    users_cart_products = db_sess.query(UsersCartProducts).filter(UsersCartProducts.user_id == current_user.id,
+                                                                  UsersCartProducts.cart_product_id == good_id).first()
+    db_sess.delete(users_cart_products)
+    db_sess.commit()
+
+    return redirect("/cart")
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -215,8 +227,6 @@ def catalog(page_idx=1):
     else:
         bookmarks_count = 0
         cart_count = 0
-    return render_template("catalog.html", goods=goods, current_page=page_idx,
-                           goods_count=goods_count, bookmarks_count=bookmarks_count, cart_count=cart_count)
     goods = goods[9 * (page_idx - 1):page_idx * 9]
 
     return render_template(
@@ -228,7 +238,9 @@ def catalog(page_idx=1):
         min_price=price_from,
         max_price=price_to,
         max_value=max(db_sess.query(Products).all(), key=lambda i: i.price).price,
-        producers=producers
+        producers=producers,
+        bookmarks_count=bookmarks_count,
+        cart_count=cart_count
     )
 
 
