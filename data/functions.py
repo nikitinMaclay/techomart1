@@ -14,4 +14,10 @@ def word_separation(req):
     words_rus = [morph.parse(el)[0].inflect({'sing', 'nomn'}).word
                  for el in words_rus if "NOUN" in morph.parse(el)[0].tag]
     words_rus = " ".join(words_rus)
-    return words_rus + words_eng
+    if words_rus and not words_eng:
+        return f"{words_rus}"
+    elif not words_rus and words_eng:
+        return f"{words_eng}"
+    elif words_rus and words_eng:
+        return f"{words_rus} {words_eng}"
+    return ""

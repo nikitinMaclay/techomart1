@@ -1,8 +1,7 @@
 import datetime
 
 from flask import Flask, render_template, redirect, request, make_response, abort, jsonify
-from sqlalchemy import collate, func
-from sqlalchemy.sql import text
+from sqlalchemy import func
 
 from data import db_session, products_resources, producers_recources
 from data.users import User
@@ -19,7 +18,7 @@ from forms.user import RegisterForm, LoginForm
 from forms.filtering import FilteringForm
 from forms.product import ProductForm
 
-import pymorphy2
+from urllib.parse import urlparse, parse_qs
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -37,26 +36,11 @@ api = Api(app)
 def index():
     form = ProductForm()
     if form.validate_on_submit():
-        page_idx = 1
-        db_sess = db_session.create_session()
         product = form.product.data
         product = word_separation(product)
-        print(product)
-        goods = db_sess.query(Products).filter(
-            Products.id > 9 * (page_idx - 1), Products.id <= 9 * page_idx,
-            func.lower(Products.name).like(func.lower(f"%{product}%"))).all()
-        print(goods)
-        for el in goods:
-            print(el)
-        goods_count = db_sess.query(Products).filter(
-            Products.name.like(f'%{product}%')).count()
-        if float(goods_count // 9) == goods_count / 9:
-            goods_count = goods_count // 9
-        else:
-            goods_count = goods_count // 9 + 1
-        print(goods_count)
-        return render_template("catalog.html", goods=goods,
-                               current_page=page_idx, goods_count=goods_count)
+        return redirect(f"/catalog/1?search={product}")
+        # return render_template("catalog.html", goods=goods,
+        #                        current_page=page_idx, goods_count=goods_count, form=FilteringForm())
     return render_template("index.html", form=form)
     db_sess = db_session.create_session()
     goods = db_sess.query(Products).filter(Products.id >= 1, Products.id <= 4).all()
@@ -215,6 +199,10 @@ def edit_user():
 def catalog(page_idx=1):
     filtering_form = FilteringForm()
     if filtering_form.validate_on_submit():
+        parsed_url = urlparse(request.url)
+        product = parse_qs(parsed_url.query).get('search', "")
+        if product:
+            product = product[0]
         producers = list(
             map(lambda i: i.label.text.lower(), filter(
                 lambda i: i.data,
@@ -228,6 +216,7 @@ def catalog(page_idx=1):
             ))
         )
         params = {
+            'search': product,
             'price_from': filtering_form.price_from.data,
             'price_to': filtering_form.price_to.data,
             'producers': ",".join(producers) if producers else "all"
@@ -235,13 +224,19 @@ def catalog(page_idx=1):
         return redirect(f"/catalog/1?{'&'.join(f'{i}={params[i]}' for i in params)}")
 
     db_sess = db_session.create_session()
+
+    product = request.args.get('search', "", str)
     price_from = request.args.get('price_from', 0, int)
     price_to = request.args.get('price_to', max(db_sess.query(Products).all(), key=lambda i: i.price).price, int)
     producers = request.args.get('producers', 'all', str)
 
     goods = list(filter(
         lambda i: i.producer.name.lower() in producers if producers != 'all' else True,
-        db_sess.query(Products).filter(price_from <= Products.price, Products.price <= price_to).all()
+        db_sess.query(Products).filter(
+            price_from <= Products.price,
+            Products.price <= price_to,
+            func.lower(Products.name).like(func.lower(f"%{product}%"))
+        ).all()
     ))
     goods_count = len(goods)
     if float(goods_count // 9) == goods_count / 9:
@@ -259,6 +254,7 @@ def catalog(page_idx=1):
         cart_count = 0
     goods = goods[9 * (page_idx - 1):page_idx * 9]
 
+    params = f"search={product}&price_from={price_from}&price_to={price_to}&producers={producers}"
     return render_template(
         "catalog.html",
         goods=goods,
@@ -270,7 +266,8 @@ def catalog(page_idx=1):
         max_value=max(db_sess.query(Products).all(), key=lambda i: i.price).price,
         producers=producers,
         bookmarks_count=bookmarks_count,
-        cart_count=cart_count
+        cart_count=cart_count,
+        params=params
     )
 
 
