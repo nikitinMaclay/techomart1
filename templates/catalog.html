@@ -24,10 +24,11 @@
               </form>
             </li>
             <li class="customer-list-item customer-list-item-active bookmark catalog-bookmark">
-              <a href="" class="content-link customer-content-link">Закладки: 0</a>
+
+              <a href="/bookmark" class="content-link customer-content-link">Закладки: {{bookmarks_count}}</a>
             </li>
             <li class="customer-list-item customer-list-item-active cart catalog-cart">
-              <a href="" class="content-link customer-content-link">Корзина: 10</a>
+              <a href="/cart" class="content-link customer-content-link">Корзина: {{cart_count}}</a>
             </li>
             <li class="customer-list-item">
               <a href=""
@@ -52,19 +53,28 @@
         <p class="contact-description">г. Санкт-Петербург, ул. Б. Конюшенная, д. 19/8</p>
       </div>
       <div class="catalog-contact-container">
-        <ul class="catalog-contact-links-list contact-links-list special-ul">
-          <li class="contact-user-item">
-            {% if current_user.is_authenticated %}
-              <a href="" class="user-account catalog-contact-link">current_user.name[:20]</a>
-            {% else %}
-              <a href="" class="user-account catalog-contact-link">aaaa</a>
-            {% endif %}
-          </li>
-        </ul>
-        <p class="user-wrapper">
-          <a href="" class="user-orders catalog-contact-link catalog-contact-link-own">Мои заказы</a>
-          <a href="" class="user-cabinet catalog-contact-link catalog-contact-link-own">Личный кабинет</a>
-        </p>
+        {% if current_user.is_authenticated %}
+          <ul class="catalog-contact-links-list contact-links-list special-ul">
+            <li class="contact-user-item">
+                <a href="/logout" class="user-account catalog-contact-link">{{current_user.name[:20]}}</a>
+            </li>
+          </ul>
+        {% else %}
+          <ul class="contact-links-list special-ul">
+            <li class="contact-links-item contact-login-item">
+              <a href="/login" class="login-link contact-link">Войти</a>
+            </li>
+            <li class="contact-links-item contact-registration-item">
+              <a href="/register" class="registration-link contact-link">Регистрация</a>
+            </li>
+          </ul>
+        {% endif %}
+        {% if current_user.is_authenticated %}
+          <p class="user-wrapper">
+            <a href="/bookmark" class="user-orders catalog-contact-link catalog-contact-link-own">Мои заказы</a>
+            <a href="/user_profile" class="user-cabinet catalog-contact-link catalog-contact-link-own">Личный кабинет</a>
+          </p>
+        {% endif %}
       </div>
     </section>
     <section>
@@ -72,7 +82,7 @@
       <nav class="site-navigation">
         <ul class="site-navigation-list special-ul">
           <li class="site-navigation-item special-content-item">
-            <a href="index.html" class="content-link header-nav-link">Главная</a>
+            <a href="/index" class="content-link header-nav-link">Главная</a>
           </li>
           <li class="site-navigation-item special-content-item">
             <a href="" class="content-link header-nav-link">Компания</a>
@@ -230,24 +240,30 @@
             </ul>
           </article>
             {% if goods %}
-              <ul class="catalog-goods-list special-ul">
+              <ul class="catalog_goods_ls special-ul">
+                {% for item in goods%}
+                  <li class="catalog-goods-item">
+                    <div class="catalog-goods-img">
+                      <img src="..{{item.image}}" alt="картинка с {{item.name}}" width="144" height="128">
+                    </div>
+                    <h3 class='catalog-goods-naming'>{{item.name}}</h3>
+                    <a href="" class="catalog-cost-button">{{item.price}} Р.</a>
+                    <div class="action-button-wrapper">
+                      <form class="" action="{{ url_for('add_to_cart', good_id=item.id, current_pg=current_page) }}" method="post">
+                        <button class="buying-button" type="submit">Купить</button>
+                      </form>
+                      <form class="" action="{{ url_for('add_to_bookmarks', good_id=item.id, current_pg=current_page) }}" method="post">
+                        <button class="in-bookmarks-button" type="submit">В закладки</button>
+                      </form>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
             {% else %}
               <ul class="catalog-goods-list special-ul" style="height: 575px">
+                </ul>
             {% endif %}
-            {% for item in goods%}
-              <li class="catalog-goods-item">
-                <div class="catalog-goods-img">
-                  <img src="..{{item.image}}" alt="картинка с {{item.name}}" width="144" height="128">
-                </div>
-                <h3 class='catalog-goods-naming'>{{item.name}}</h3>
-                <a href="" class="catalog-cost-button">{{item.price}} Р.</a>
-                <div class="action-button-wrapper">
-                  <a href="#" class="buying-button">Купить</a>
-                  <a href="#" class="in-bookmarks-button">В закладки</a>
-                </div>
-              </li>
-            {% endfor %}
-          </ul></div>
+        </div>
           <ul class="catalog-switch-list special-ul">
             <li class="catalog-switch-item catalog-switch-item-next">
               {% if current_page != 1 %}
