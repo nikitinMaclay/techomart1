@@ -264,24 +264,6 @@
                 </ul>
             {% endif %}
         </div>
-              <ul class="catalog-goods-list special-ul">
-            {% else %}
-              <ul class="catalog-goods-list special-ul" style="height: 575px">
-            {% endif %}
-            {% for item in goods%}
-              <li class="catalog-goods-item">
-                <div class="catalog-goods-img">
-                  <img src="{{item.image}}" alt="картинка с {{item.name}}" width="144" height="128">
-                </div>
-                <h3 class='catalog-goods-naming'>{{item.name}}</h3>
-                <a href="" class="catalog-cost-button">{{item.price}} Р.</a>
-                <div class="action-button-wrapper">
-                  <a href="#" class="buying-button">Купить</a>
-                  <a href="#" class="in-bookmarks-button">В закладки</a>
-                </div>
-              </li>
-            {% endfor %}
-          </ul></div>
           <ul class="catalog-switch-list special-ul">
             <li class="catalog-switch-item catalog-switch-item-next">
               {% if current_page != 1 %}
