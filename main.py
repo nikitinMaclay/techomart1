@@ -414,7 +414,7 @@ def main():
     api.add_resource(producers_recources.ProducersResource, '/api/producers/<int:producers_id>')
     api.add_resource(producers_recources.ProducersListResource, '/api/producers')
 
-    app.run()
+    app.run(host='0.0.0.0')
 
 
 if __name__ == '__main__':
